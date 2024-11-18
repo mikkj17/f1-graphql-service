@@ -1,4 +1,14 @@
 
+kotlin {
+    jvmToolchain(22)
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(22))
+    }
+}
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
