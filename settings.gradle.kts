@@ -1,1 +1,1 @@
-rootProject.name = "formula-one-graphql"
+rootProject.name = "f1-graphql-service"
