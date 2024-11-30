@@ -1,5 +1,7 @@
 package com.example.client.schema.models
 
+import com.example.client.schema.MrData
+import com.example.client.schema.Table
 import com.example.server.schema.models.Driver
 
 data class Driver(
@@ -12,6 +14,12 @@ data class Driver(
     val dateOfBirth: String,
     val nationality: String,
 ) : Model {
+    companion object : StaticModel<com.example.client.schema.models.Driver> {
+        override val endpoint = "drivers"
+        override fun <T : Model> getTable(data: MrData<T>): Table<T> = data.driverTable!!
+        override fun <T : Model> getModels(table: Table<T>): List<T> = table.drivers!!
+    }
+
     fun toDriver() = Driver(
         id = driverId,
         number = permanentNumber,
