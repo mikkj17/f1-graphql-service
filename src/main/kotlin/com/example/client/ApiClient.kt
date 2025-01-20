@@ -3,6 +3,7 @@ package com.example.client
 import com.example.client.schema.ApiResponse
 import com.example.client.schema.MrData
 import com.example.client.schema.Table
+import com.example.client.schema.models.Constructor
 import com.example.client.schema.models.Driver
 import com.example.client.schema.models.Model
 import io.ktor.client.*
@@ -63,5 +64,11 @@ class ApiClient {
         Driver.endpoint,
         tableExtractor = { Driver.getTable(it) },
         modelExtractor = { Driver.getModels(it) },
+    )
+
+    suspend fun getConstructors() = fetchAll<Constructor>(
+        Constructor.endpoint,
+        tableExtractor = { Constructor.getTable(it) },
+        modelExtractor = { Constructor.getModels(it) },
     )
 }

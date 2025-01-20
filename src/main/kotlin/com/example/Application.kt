@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.server.schema.ConstructorQueryService
 import com.example.server.schema.DriverQueryService
 import com.expediagroup.graphql.server.ktor.GraphQL
 import com.expediagroup.graphql.server.ktor.graphQLPostRoute
@@ -17,7 +18,8 @@ fun Application.module() {
         schema {
             packages = listOf("com.example")
             queries = listOf(
-                DriverQueryService()
+                DriverQueryService(),
+                ConstructorQueryService(),
             )
         }
     }
