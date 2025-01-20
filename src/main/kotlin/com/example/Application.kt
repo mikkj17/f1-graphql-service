@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.server.schema.CircuitQueryService
 import com.example.server.schema.ConstructorQueryService
 import com.example.server.schema.DriverQueryService
 import com.expediagroup.graphql.server.ktor.GraphQL
@@ -20,6 +21,7 @@ fun Application.module() {
             queries = listOf(
                 DriverQueryService(),
                 ConstructorQueryService(),
+                CircuitQueryService(),
             )
         }
     }

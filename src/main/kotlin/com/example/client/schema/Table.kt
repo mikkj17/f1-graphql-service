@@ -5,5 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Table<T : Model>(
     @JsonProperty("Drivers") val drivers: List<T>? = null,
-    @JsonProperty("Constructors") val constructors: List<T>? = null
+    @JsonProperty("Constructors") val constructors: List<T>? = null,
+    @JsonProperty("Circuits") val circuits: List<T>? = null,
 )

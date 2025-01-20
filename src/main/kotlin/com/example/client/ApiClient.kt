@@ -3,6 +3,7 @@ package com.example.client
 import com.example.client.schema.ApiResponse
 import com.example.client.schema.MrData
 import com.example.client.schema.Table
+import com.example.client.schema.models.Circuit
 import com.example.client.schema.models.Constructor
 import com.example.client.schema.models.Driver
 import com.example.client.schema.models.Model
@@ -70,5 +71,11 @@ class ApiClient {
         Constructor.endpoint,
         tableExtractor = { Constructor.getTable(it) },
         modelExtractor = { Constructor.getModels(it) },
+    )
+
+    suspend fun getCircuits() = fetchAll<Circuit>(
+        Circuit.endpoint,
+        tableExtractor = { Circuit.getTable(it) },
+        modelExtractor = { Circuit.getModels(it) },
     )
 }
