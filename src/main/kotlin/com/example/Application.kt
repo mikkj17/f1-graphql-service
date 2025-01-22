@@ -3,6 +3,7 @@ package com.example
 import com.example.server.schema.CircuitQueryService
 import com.example.server.schema.ConstructorQueryService
 import com.example.server.schema.DriverQueryService
+import com.example.server.schema.SeasonQueryService
 import com.expediagroup.graphql.server.ktor.GraphQL
 import com.expediagroup.graphql.server.ktor.graphQLPostRoute
 import com.expediagroup.graphql.server.ktor.graphQLSDLRoute
@@ -22,6 +23,7 @@ fun Application.module() {
                 DriverQueryService(),
                 ConstructorQueryService(),
                 CircuitQueryService(),
+                SeasonQueryService(),
             )
         }
     }

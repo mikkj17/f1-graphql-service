@@ -7,6 +7,7 @@ import com.example.client.schema.models.Circuit
 import com.example.client.schema.models.Constructor
 import com.example.client.schema.models.Driver
 import com.example.client.schema.models.Model
+import com.example.shared.schema.models.Season
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -77,5 +78,11 @@ class ApiClient {
         Circuit.endpoint,
         tableExtractor = { Circuit.getTable(it) },
         modelExtractor = { Circuit.getModels(it) },
+    )
+
+    suspend fun getSeasons() = fetchAll<Season>(
+        "seasons",
+        tableExtractor = { it.seasonTable!! },
+        modelExtractor = { it.seasons!! },
     )
 }
