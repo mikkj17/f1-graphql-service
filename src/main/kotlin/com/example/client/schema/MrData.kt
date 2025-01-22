@@ -9,8 +9,9 @@ data class MrData<T : Model>(
     val limit: Int,
     val offset: Int,
     val total: Int,
-    @JsonProperty("DriverTable") val driverTable: Table<T>? = null,
-    @JsonProperty("ConstructorTable") val constructorTable: Table<T>? = null,
-    @JsonProperty("CircuitTable") val circuitTable: Table<T>? = null,
-    @JsonProperty("SeasonTable") val seasonTable: Table<T>? = null,
+    @JsonProperty("DriverTable") val driverTable: Table<T>?,
+    @JsonProperty("ConstructorTable") val constructorTable: Table<T>?,
+    @JsonProperty("CircuitTable") val circuitTable: Table<T>?,
+    @JsonProperty("SeasonTable") val seasonTable: Table<T>?,
+    @JsonProperty("RaceTable") val raceTable: Table<T>?,
 )
