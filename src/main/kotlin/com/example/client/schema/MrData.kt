@@ -1,6 +1,6 @@
 package com.example.client.schema
 
-import com.example.client.schema.models.Model
+import com.example.shared.schema.models.Model
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
