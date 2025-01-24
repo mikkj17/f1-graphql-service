@@ -118,4 +118,12 @@ class ApiClient {
         year.toString(),
         round.toString(),
     )
+
+    suspend fun getQualifying(year: Int, round: Int) = fetch<Qualifying>(
+        "qualifying",
+        getTable = { raceTable!! },
+        getModels = { races!! },
+        year.toString(),
+        round.toString(),
+    )
 }

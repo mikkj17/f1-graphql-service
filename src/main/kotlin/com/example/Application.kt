@@ -22,6 +22,7 @@ fun Application.module() {
                 CircuitQueryService(),
                 SeasonQueryService(),
                 RaceQueryService(),
+                QualifyingQueryService(),
             )
         }
     }
