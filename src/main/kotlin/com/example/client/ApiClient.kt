@@ -126,4 +126,11 @@ class ApiClient {
         year.toString(),
         round.toString(),
     )
+
+    suspend fun getSchedules(year: Int) = fetchAll<Schedule>(
+        "",
+        getTable = { raceTable!! },
+        getModels = { races!! },
+        year.toString(),
+    )
 }

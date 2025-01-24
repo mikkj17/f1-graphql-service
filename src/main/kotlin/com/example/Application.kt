@@ -23,6 +23,7 @@ fun Application.module() {
                 SeasonQueryService(),
                 RaceQueryService(),
                 QualifyingQueryService(),
+                ScheduleQueryService(),
             )
         }
     }
