@@ -16,6 +16,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
+typealias TableExtractor<T> = MrData<T>.() -> Table<T>
+typealias ModelsExtractor<T> = Table<T>.() -> List<T>
+
 class ApiClient {
     private val host = "api.jolpi.ca"
     private val path = "/ergast/f1"
@@ -40,28 +43,32 @@ class ApiClient {
             parameters.append("offset", offset.toString())
         }
 
-        return client.get(url.buildString()).body<ApiResponse<T>>()
+        return client.get(url.buildString()).body()
     }
 
     private suspend inline fun <reified T : Model> fetch(
         endpoint: String,
-        crossinline tableExtractor: (MrData<T>) -> Table<T>,
-        crossinline modelExtractor: (Table<T>) -> List<T>,
+        crossinline getTable: TableExtractor<T>,
+        crossinline getModels: ModelsExtractor<T>,
         vararg pathParameters: String,
     ): T {
         val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters = pathParameters)
-        return modelExtractor(tableExtractor(response.data)).first()
+        return response
+            .data
+            .getTable()
+            .getModels()
+            .first()
     }
 
     private suspend inline fun <reified T : Model> fetchAll(
         endpoint: String,
-        crossinline tableExtractor: (MrData<T>) -> Table<T>,
-        crossinline modelExtractor: (Table<T>) -> List<T>,
+        crossinline getTable: TableExtractor<T>,
+        crossinline getModels: ModelsExtractor<T>,
         vararg pathParameters: String,
     ): List<T> {
         // Fetch the first chunk and total records
         val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters = pathParameters)
-        val firstChunk = modelExtractor(tableExtractor(response.data))
+        val firstChunk = response.data.getTable().getModels()
 
         // Calculate offsets for the remaining chunks
         val offsets = (limit until response.data.total step limit)
@@ -71,7 +78,7 @@ class ApiClient {
             offsets.map { offset ->
                 async(Dispatchers.IO) {
                     val chunk: ApiResponse<T> = fetchChunk(endpoint, offset, pathParameters = pathParameters)
-                    modelExtractor(tableExtractor(chunk.data))
+                    chunk.data.getTable().getModels()
                 }
             }.awaitAll()
         }
@@ -82,32 +89,32 @@ class ApiClient {
 
     suspend fun getDrivers() = fetchAll<Driver>(
         "drivers",
-        tableExtractor = { it.driverTable!! },
-        modelExtractor = { it.drivers!! },
+        getTable = { driverTable!! },
+        getModels = { drivers!! },
     )
 
     suspend fun getConstructors() = fetchAll<Constructor>(
         "constructors",
-        tableExtractor = { it.constructorTable!! },
-        modelExtractor = { it.constructors!! },
+        getTable = { constructorTable!! },
+        getModels = { constructors!! },
     )
 
     suspend fun getCircuits() = fetchAll<Circuit>(
         "circuits",
-        tableExtractor = { it.circuitTable!! },
-        modelExtractor = { it.circuits!! },
+        getTable = { circuitTable!! },
+        getModels = { circuits!! },
     )
 
     suspend fun getSeasons() = fetchAll<Season>(
         "seasons",
-        tableExtractor = { it.seasonTable!! },
-        modelExtractor = { it.seasons!! },
+        getTable = { seasonTable!! },
+        getModels = { seasons!! },
     )
 
     suspend fun getRace(year: Int, round: Int) = fetch<Race>(
         "results",
-        tableExtractor = { it.raceTable!! },
-        modelExtractor = { it.races!! },
+        getTable = { raceTable!! },
+        getModels = { races!! },
         year.toString(),
         round.toString(),
     )
