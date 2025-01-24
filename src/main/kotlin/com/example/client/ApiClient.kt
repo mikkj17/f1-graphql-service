@@ -43,6 +43,16 @@ class ApiClient {
         return client.get(url.buildString()).body<ApiResponse<T>>()
     }
 
+    private suspend inline fun <reified T : Model> fetch(
+        endpoint: String,
+        crossinline tableExtractor: (MrData<T>) -> Table<T>,
+        crossinline modelExtractor: (Table<T>) -> List<T>,
+        vararg pathParameters: String,
+    ): T {
+        val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters = pathParameters)
+        return modelExtractor(tableExtractor(response.data)).first()
+    }
+
     private suspend inline fun <reified T : Model> fetchAll(
         endpoint: String,
         crossinline tableExtractor: (MrData<T>) -> Table<T>,
@@ -94,12 +104,11 @@ class ApiClient {
         modelExtractor = { it.seasons!! },
     )
 
-    suspend fun getRace(year: Int, round: Int) = fetchAll<Race>(
+    suspend fun getRace(year: Int, round: Int) = fetch<Race>(
         "results",
         tableExtractor = { it.raceTable!! },
         modelExtractor = { it.races!! },
         year.toString(),
         round.toString(),
     )
-        .first()
 }
