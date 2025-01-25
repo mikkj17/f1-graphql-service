@@ -6,4 +6,7 @@ import com.expediagroup.graphql.server.operations.Query
 class StandingsQueryService : Query {
     suspend fun driverStandings(year: Int, round: Int? = null) = ApiClient()
         .getDriverStandings(year, round)
+
+    suspend fun constructorStandings(year: Int, round: Int? = null) = ApiClient()
+        .getConstructorStandings(year, round)
 }
