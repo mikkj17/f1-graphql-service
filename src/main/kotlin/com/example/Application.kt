@@ -24,6 +24,7 @@ fun Application.module() {
                 RaceQueryService(),
                 QualifyingQueryService(),
                 ScheduleQueryService(),
+                StandingsQueryService(),
             )
         }
     }

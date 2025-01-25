@@ -14,4 +14,5 @@ data class MrData<T : Model>(
     @JsonProperty("CircuitTable") val circuitTable: Table<T>?,
     @JsonProperty("SeasonTable") val seasonTable: Table<T>?,
     @JsonProperty("RaceTable") val raceTable: Table<T>?,
+    @JsonProperty("StandingsTable") val standingsTable: Table<T>?,
 )

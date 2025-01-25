@@ -11,4 +11,5 @@ data class Table<T : Model>(
     @JsonProperty("Circuits") val circuits: List<T>?,
     @JsonProperty("Seasons") val seasons: List<T>?,
     @JsonProperty("Races") val races: List<T>?,
+    @JsonProperty("StandingsLists") val standingsLists: List<T>?,
 )

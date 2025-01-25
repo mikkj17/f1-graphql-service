@@ -11,6 +11,7 @@ import com.example.shared.schema.models.result.Qualifying
 import com.example.shared.schema.models.result.Race
 import com.example.shared.schema.models.schedule.Schedule
 import com.example.shared.schema.models.season.Season
+import com.example.shared.schema.models.standings.DriverStandingList
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -139,5 +140,12 @@ class ApiClient {
         getTable = { raceTable!! },
         getModels = { races!! },
         year.toString(),
+    )
+
+    suspend fun getDriverStandings(year: Int, round: Int?) = fetch<DriverStandingList>(
+        "driverStandings",
+        getTable = { standingsTable!! },
+        getModels = { standingsLists!! },
+        pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray()
     )
 }
