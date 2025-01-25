@@ -1,4 +1,4 @@
-package com.example.shared.schema.models
+package com.example.shared.schema.models.circuit
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

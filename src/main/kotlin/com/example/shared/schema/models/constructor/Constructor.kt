@@ -1,5 +1,6 @@
-package com.example.shared.schema.models
+package com.example.shared.schema.models.constructor
 
+import com.example.shared.schema.models.Model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Constructor(

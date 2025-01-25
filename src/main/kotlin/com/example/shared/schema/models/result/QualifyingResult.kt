@@ -1,5 +1,7 @@
-package com.example.shared.schema.models
+package com.example.shared.schema.models.result
 
+import com.example.shared.schema.models.constructor.Constructor
+import com.example.shared.schema.models.driver.Driver
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class QualifyingResult(

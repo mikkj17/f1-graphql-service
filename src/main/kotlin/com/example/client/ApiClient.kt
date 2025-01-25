@@ -3,7 +3,14 @@ package com.example.client
 import com.example.client.schema.ApiResponse
 import com.example.client.schema.MrData
 import com.example.client.schema.Table
-import com.example.shared.schema.models.*
+import com.example.shared.schema.models.Model
+import com.example.shared.schema.models.circuit.Circuit
+import com.example.shared.schema.models.constructor.Constructor
+import com.example.shared.schema.models.driver.Driver
+import com.example.shared.schema.models.result.Qualifying
+import com.example.shared.schema.models.result.Race
+import com.example.shared.schema.models.schedule.Schedule
+import com.example.shared.schema.models.season.Season
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
