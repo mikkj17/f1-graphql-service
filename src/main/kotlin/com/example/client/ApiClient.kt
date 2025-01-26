@@ -107,7 +107,17 @@ class ApiClient {
         driverTable!!.drivers!!
     }
 
-    suspend fun getConstructors() = fetchAll<Constructor>("constructors") {
+    suspend fun getConstructors(year: Int?, round: Int?) = fetchAll<Constructor>(
+        "constructors",
+        pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
+    ) {
+        constructorTable!!.constructors!!
+    }
+
+    suspend fun getConstructor(constructorId: String) = fetch<Constructor>(
+        "constructors",
+        params = arrayOf(constructorId),
+    ) {
         constructorTable!!.constructors!!
     }
 
