@@ -121,7 +121,14 @@ class ApiClient {
         constructorTable!!.constructors!!
     }
 
-    suspend fun getCircuits() = fetchAll<Circuit>("circuits") {
+    suspend fun getCircuits(year: Int?, round: Int?) = fetchAll<Circuit>(
+        "circuits",
+        pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
+    ) {
+        circuitTable!!.circuits!!
+    }
+
+    suspend fun getCircuit(circuitId: String) = fetch<Circuit>("circuits", params = arrayOf(circuitId)) {
         circuitTable!!.circuits!!
     }
 
