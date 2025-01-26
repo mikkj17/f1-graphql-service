@@ -42,12 +42,13 @@ class ApiClient {
     private suspend inline fun <reified T : Model> fetchChunk(
         endpoint: String,
         offset: Int,
-        vararg pathParameters: String,
+        pathParameters: Array<String>,
+        params: Array<String>,
     ): ApiResponse<T> {
         val url = URLBuilder().apply {
             protocol = URLProtocol.HTTPS
             host = this@ApiClient.host
-            path(path, *pathParameters, endpoint)
+            path(path, *pathParameters, endpoint, *params)
             parameters.append("limit", limit.toString())
             parameters.append("offset", offset.toString())
         }
@@ -57,10 +58,11 @@ class ApiClient {
 
     private suspend inline fun <reified T : Model> fetch(
         endpoint: String,
-        vararg pathParameters: String,
+        pathParameters: Array<String> = emptyArray(),
+        params: Array<String> = emptyArray(),
         crossinline getModels: ModelsExtractor<T>,
     ): T {
-        val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters = pathParameters)
+        val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters, params)
         return response
             .data
             .getModels()
@@ -69,11 +71,12 @@ class ApiClient {
 
     private suspend inline fun <reified T : Model> fetchAll(
         endpoint: String,
-        vararg pathParameters: String,
+        pathParameters: Array<String> = emptyArray(),
+        params: Array<String> = emptyArray(),
         crossinline getModels: ModelsExtractor<T>,
     ): List<T> {
         // Fetch the first chunk and total records
-        val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters = pathParameters)
+        val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters, params)
         val firstChunk = response.data.getModels()
 
         // Calculate offsets for the remaining chunks
@@ -83,7 +86,7 @@ class ApiClient {
         val remainingChunks = coroutineScope {
             offsets.map { offset ->
                 async(Dispatchers.IO) {
-                    val chunk: ApiResponse<T> = fetchChunk(endpoint, offset, pathParameters = pathParameters)
+                    val chunk: ApiResponse<T> = fetchChunk(endpoint, offset, pathParameters, params)
                     chunk.data.getModels()
                 }
             }.awaitAll()
@@ -93,7 +96,14 @@ class ApiClient {
         return firstChunk + remainingChunks.flatten()
     }
 
-    suspend fun getDrivers() = fetchAll<Driver>("drivers") {
+    suspend fun getDrivers(year: Int?, round: Int?) = fetchAll<Driver>(
+        "drivers",
+        pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
+    ) {
+        driverTable!!.drivers!!
+    }
+
+    suspend fun getDriver(driverId: String) = fetch<Driver>("drivers", params = arrayOf(driverId)) {
         driverTable!!.drivers!!
     }
 
@@ -109,19 +119,21 @@ class ApiClient {
         seasonTable!!.seasons!!
     }
 
-    suspend fun getRace(year: Int, round: Int) = fetch<Race>("results", year.toString(), round.toString()) {
+    suspend fun getRace(year: Int, round: Int) = fetch<Race>(
+        "results",
+        pathParameters = arrayOf(year.toString(), round.toString()),
+    ) {
         raceTable!!.races!!
     }
 
     suspend fun getQualifying(year: Int, round: Int) = fetch<Qualifying>(
         "qualifying",
-        year.toString(),
-        round.toString(),
+        pathParameters = arrayOf(year.toString(), round.toString()),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getSchedules(year: Int) = fetchAll<Schedule>("", year.toString()) {
+    suspend fun getSchedules(year: Int) = fetchAll<Schedule>("", pathParameters = arrayOf(year.toString())) {
         raceTable!!.races!!
     }
 
@@ -141,16 +153,14 @@ class ApiClient {
 
     suspend fun getLaps(year: Int, round: Int) = fetchAll<RaceLaps>(
         "laps",
-        year.toString(),
-        round.toString(),
+        pathParameters = arrayOf(year.toString(), round.toString()),
     ) {
         raceTable!!.races!!
     }
 
     suspend fun getPitStops(year: Int, round: Int) = fetch<RacePitStop>(
         "pitstops",
-        year.toString(),
-        round.toString(),
+        pathParameters = arrayOf(year.toString(), round.toString()),
     ) {
         raceTable!!.races!!
     }
