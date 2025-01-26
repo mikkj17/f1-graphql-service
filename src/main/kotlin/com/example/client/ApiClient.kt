@@ -1,8 +1,9 @@
 package com.example.client
 
 import com.example.client.schema.ApiResponse
+import com.example.client.schema.Model
 import com.example.client.schema.MrData
-import com.example.shared.schema.models.Model
+import com.example.client.schema.models.lap.RaceLaps
 import com.example.shared.schema.models.circuit.Circuit
 import com.example.shared.schema.models.constructor.Constructor
 import com.example.shared.schema.models.driver.Driver
@@ -135,5 +136,13 @@ class ApiClient {
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         standingsTable!!.standingsLists!!
+    }
+
+    suspend fun getLaps(year: Int, round: Int) = fetchAll<RaceLaps>(
+        "laps",
+        year.toString(),
+        round.toString(),
+    ) {
+        raceTable!!.races!!
     }
 }

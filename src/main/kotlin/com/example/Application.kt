@@ -25,6 +25,7 @@ fun Application.module() {
                 QualifyingQueryService(),
                 ScheduleQueryService(),
                 StandingsQueryService(),
+                LapQueryService(),
             )
         }
     }
