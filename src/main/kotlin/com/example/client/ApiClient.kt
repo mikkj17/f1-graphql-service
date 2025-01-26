@@ -7,6 +7,7 @@ import com.example.client.schema.models.lap.RaceLaps
 import com.example.shared.schema.models.circuit.Circuit
 import com.example.shared.schema.models.constructor.Constructor
 import com.example.shared.schema.models.driver.Driver
+import com.example.shared.schema.models.pitStop.RacePitStop
 import com.example.shared.schema.models.result.Qualifying
 import com.example.shared.schema.models.result.Race
 import com.example.shared.schema.models.schedule.Schedule
@@ -140,6 +141,14 @@ class ApiClient {
 
     suspend fun getLaps(year: Int, round: Int) = fetchAll<RaceLaps>(
         "laps",
+        year.toString(),
+        round.toString(),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getPitStops(year: Int, round: Int) = fetch<RacePitStop>(
+        "pitstops",
         year.toString(),
         round.toString(),
     ) {
