@@ -1,7 +1,6 @@
 package com.example
 
 import com.example.server.schema.*
-import com.example.server.schema.models.PitStopQueryService
 import com.expediagroup.graphql.server.ktor.GraphQL
 import com.expediagroup.graphql.server.ktor.graphQLPostRoute
 import com.expediagroup.graphql.server.ktor.graphQLSDLRoute
