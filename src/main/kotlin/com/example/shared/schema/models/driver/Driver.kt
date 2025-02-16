@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Driver(
     @JsonProperty("driverId") val id: String,
-    @JsonProperty("permanentNumber") val number: Int,
+    @JsonProperty("permanentNumber") val number: Int?,
     val code: String?,
     val url: String,
     val givenName: String,
