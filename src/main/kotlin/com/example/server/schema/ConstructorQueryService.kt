@@ -1,12 +1,14 @@
 package com.example.server.schema
 
 import com.example.client.ApiClient
-import com.expediagroup.graphql.server.operations.Query
+import com.example.shared.schema.models.constructor.Constructor
 
-class ConstructorQueryService : Query {
-    suspend fun constructors(year: Int? = null, round: Int? = null) = ApiClient()
-        .getConstructors(year, round)
+class ConstructorQueryService : CachedQueryService<Constructor>() {
+    suspend fun constructors(year: Int? = null, round: Int? = null) = cache.getOrPut(year to round) {
+        ApiClient().getConstructors(year, round)
+    }
 
-    suspend fun constructor(constructorId: String) = ApiClient()
-        .getConstructor(constructorId)
+    suspend fun constructor(constructorId: String) = idCache.getOrPut(constructorId) {
+        ApiClient().getConstructor(constructorId)
+    }
 }

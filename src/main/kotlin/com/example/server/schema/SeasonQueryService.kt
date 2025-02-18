@@ -1,9 +1,10 @@
 package com.example.server.schema
 
 import com.example.client.ApiClient
-import com.expediagroup.graphql.server.operations.Query
+import com.example.shared.schema.models.season.Season
 
-class SeasonQueryService : Query {
-    suspend fun seasons() = ApiClient()
-        .getSeasons()
+class SeasonQueryService : CachedQueryService<Season>() {
+    suspend fun seasons() = cache.getOrPut(null to null) {
+        ApiClient().getSeasons()
+    }
 }

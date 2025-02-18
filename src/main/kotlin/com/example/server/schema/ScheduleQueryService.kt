@@ -1,9 +1,10 @@
 package com.example.server.schema
 
 import com.example.client.ApiClient
-import com.expediagroup.graphql.server.operations.Query
+import com.example.shared.schema.models.schedule.Schedule
 
-class ScheduleQueryService : Query {
-    suspend fun schedules(year: Int) = ApiClient()
-        .getSchedules(year)
+class ScheduleQueryService : CachedQueryService<Schedule>() {
+    suspend fun schedules(year: Int) = cache.getOrPut(year to null) {
+        ApiClient().getSchedules(year)
+    }
 }
