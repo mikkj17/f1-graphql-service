@@ -1,24 +1,24 @@
 [versions]
-kotlin-version = "2.0.21"
-ktor-version = "2.3.12"
-logback-version = "1.4.14"
-graphql-version = "8.2.1"
-coroutines-version = "1.9.0"
+kotlin = "2.1.10"
+ktor = "2.3.12"
+logback = "1.4.14"
+graphql = "8.2.1"
+coroutines = "1.9.0"
 
 [libraries]
-ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor-version" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor-version" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-version" }
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor-version" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-version" }
-ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor-version" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
-ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml-jvm", version.ref = "ktor-version" }
-ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor-version" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin-version" }
-graphql-server = { module = "com.expediagroup:graphql-kotlin-ktor-server", version.ref = "graphql-version" }
-kotlinx-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-version" }
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml-jvm", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+graphql-server = { module = "com.expediagroup:graphql-kotlin-ktor-server", version.ref = "graphql" }
+kotlinx-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor-version" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
