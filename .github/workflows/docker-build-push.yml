@@ -28,6 +28,8 @@ jobs:
           push: true
           tags: mikkj17/f1-graphql-service:latest
           platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Verify Docker image
         run: docker buildx imagetools inspect mikkj17/f1-graphql-service:latest
