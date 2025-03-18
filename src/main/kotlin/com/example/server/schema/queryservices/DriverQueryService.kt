@@ -9,14 +9,23 @@ import com.example.shared.mappers.toDriver
 import com.expediagroup.graphql.server.operations.Query
 
 class DriverQueryService : Query {
-    private val driverListCache = mutableMapOf<Pair<Int?, Int?>, List<Driver>>()
+    private val driverListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Driver>>()
     private val driverCache = mutableMapOf<String, DriverDetail?>()
 
-    suspend fun drivers(year: Int? = null, round: Int? = null) = driverListCache.getOrPut(year to round) {
-        JolpicaClient()
-            .getDrivers(year, round)
-            .map { it.toDriver() }
-    }
+    suspend fun drivers(year: Int? = null, round: Int? = null, constructorId: String? = null) = driverListCache
+        .getOrPut(Triple(year, round, constructorId)) {
+            if (constructorId != null && (year != null || round != null)) {
+                throw AssertionError("constructorId can't be used with year or round")
+            }
+
+            val client = JolpicaClient()
+            val drivers = if (constructorId != null)
+                client.getDriversByConstructor(constructorId)
+            else
+                client.getDrivers(year, round)
+
+            drivers.map { it.toDriver() }
+        }
 
     suspend fun driver(driverId: String): DriverDetail? {
         return driverCache.getOrPut(driverId) {

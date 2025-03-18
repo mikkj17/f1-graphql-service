@@ -10,10 +10,4 @@ class CircuitQueryService : CachedQueryService<Circuit, Circuit>() {
             .getCircuits(year, round)
             .map { it.toCircuit() }
     }
-
-    suspend fun circuit(circuitId: String) = idCache.getOrPut(circuitId) {
-        JolpicaClient()
-            .getCircuit(circuitId)
-            .toCircuit()
-    }
 }

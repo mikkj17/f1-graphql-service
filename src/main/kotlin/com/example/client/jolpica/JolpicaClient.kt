@@ -110,6 +110,13 @@ class JolpicaClient {
         driverTable!!.drivers!!
     }
 
+    suspend fun getDriversByConstructor(constructorId: String) = fetchAll<Driver>(
+        "drivers",
+        pathParameters = arrayOf("constructors", constructorId),
+    ) {
+        driverTable!!.drivers!!
+    }
+
     suspend fun getDriver(driverId: String) = fetch<Driver>("drivers", params = arrayOf(driverId)) {
         driverTable!!.drivers!!
     }
@@ -121,9 +128,9 @@ class JolpicaClient {
         constructorTable!!.constructors!!
     }
 
-    suspend fun getConstructor(constructorId: String) = fetch<Constructor>(
+    suspend fun getConstructorsByDriver(driverId: String) = fetchAll<Constructor>(
         "constructors",
-        params = arrayOf(constructorId),
+        pathParameters = arrayOf("drivers", driverId),
     ) {
         constructorTable!!.constructors!!
     }
@@ -132,10 +139,6 @@ class JolpicaClient {
         "circuits",
         pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
     ) {
-        circuitTable!!.circuits!!
-    }
-
-    suspend fun getCircuit(circuitId: String) = fetch<Circuit>("circuits", params = arrayOf(circuitId)) {
         circuitTable!!.circuits!!
     }
 
