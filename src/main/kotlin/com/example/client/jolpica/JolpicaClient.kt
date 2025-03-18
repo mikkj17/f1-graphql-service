@@ -17,6 +17,7 @@ import com.example.client.jolpica.schema.models.standings.DriverStandingList
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -39,6 +40,9 @@ class JolpicaClient {
                 ignoreUnknownKeys = true
             })
         }
+        install(Logging) {
+            level = LogLevel.NONE
+        }
     }
 
     private suspend inline fun <reified T : JolpicaModel> fetchChunk(
@@ -50,7 +54,7 @@ class JolpicaClient {
         val url = URLBuilder().apply {
             protocol = URLProtocol.HTTPS
             host = this@JolpicaClient.host
-            path(path, *pathParameters, endpoint, *params)
+            path(path, *pathParameters, "$endpoint/", *params)
             parameters.append("limit", limit.toString())
             parameters.append("offset", offset.toString())
         }
@@ -86,10 +90,11 @@ class JolpicaClient {
 
         // Fetch remaining chunks in parallel
         val remainingChunks = coroutineScope {
-            offsets.map { offset ->
+            offsets.chunked(5).map { batch ->   // fetch 5 chunks at a time to avoid hitting the rate limit
                 async(Dispatchers.IO) {
-                    val chunk: ApiResponse<T> = fetchChunk(endpoint, offset, pathParameters, params)
-                    chunk.data.getModels()
+                    batch.map { offset ->
+                        fetchChunk<T>(endpoint, offset, pathParameters, params).data.getModels()
+                    }.flatten()
                 }
             }.awaitAll()
         }
