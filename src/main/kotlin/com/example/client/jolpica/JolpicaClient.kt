@@ -54,7 +54,7 @@ class JolpicaClient {
         val url = URLBuilder().apply {
             protocol = URLProtocol.HTTPS
             host = this@JolpicaClient.host
-            path(path, *pathParameters, "$endpoint/", *params)
+            path(path, *pathParameters, endpoint, *params)
             parameters.append("limit", limit.toString())
             parameters.append("offset", offset.toString())
         }
@@ -160,7 +160,24 @@ class JolpicaClient {
         raceTable!!.races!!
     }
 
-    suspend fun getSchedules(year: Int) = fetchAll<Schedule>("", pathParameters = arrayOf(year.toString())) {
+    suspend fun getSchedules(year: Int) = fetchAll<Schedule>(
+        "races",
+        pathParameters = arrayOf(year.toString()),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getSchedulesByDriver(driverId: String) = fetchAll<Schedule>(
+        "drivers",
+        params = arrayOf(driverId, "races"),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getSchedulesByConstructor(constructorId: String) = fetchAll<Schedule>(
+        "constructors",
+        params = arrayOf(constructorId, "races"),
+    ) {
         raceTable!!.races!!
     }
 

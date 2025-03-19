@@ -9,11 +9,11 @@ import kotlinx.serialization.Serializable
 data class Schedule(
     val season: Int,
     val round: Int,
-    val url: String?,
+    val url: String? = null,
     val raceName: String,
     @SerialName("Circuit") val circuit: Circuit,
     val date: String,
-    val time: String?,
+    val time: String? = null,
     @SerialName("FirstPractice") val firstPractice: Session? = null,
     @SerialName("SecondPractice") val secondPractice: Session? = null,
     @SerialName("ThirdPractice") val thirdPractice: Session? = null,
