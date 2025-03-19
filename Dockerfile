@@ -21,4 +21,4 @@ FROM amazoncorretto:22 AS runtime
 EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/f1-graphql-service.jar
-ENTRYPOINT ["java","-jar","/app/f1-graphql-service.jar"]
+ENTRYPOINT ["java", "-ea", "-jar", "/app/f1-graphql-service.jar"]

@@ -8,12 +8,16 @@ import com.expediagroup.graphql.server.operations.Query
 class ConstructorQueryService : Query {
     private val constructorListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Constructor>>()
 
-    suspend fun constructors(year: Int? = null, round: Int? = null, driverId: String? = null) = constructorListCache
-        .getOrPut(Triple(year, round, driverId)) {
-            if (driverId != null && (year != null || round != null)) {
-                throw AssertionError("driverId can't be used with year or round")
-            }
+    suspend fun constructors(year: Int? = null, round: Int? = null, driverId: String? = null): List<Constructor> {
+        require(!(driverId != null && (year != null || round != null))) {
+            "driverId can't be used with year or round"
+        }
 
+        require(round == null || year != null) {
+            "round can't be used without year"
+        }
+
+        return constructorListCache.getOrPut(Triple(year, round, driverId)) {
             val client = JolpicaClient()
             val constructors = if (driverId != null)
                 client.getConstructorsByDriver(driverId)
@@ -22,4 +26,5 @@ class ConstructorQueryService : Query {
 
             constructors.map { it.toConstructor() }
         }
+    }
 }
