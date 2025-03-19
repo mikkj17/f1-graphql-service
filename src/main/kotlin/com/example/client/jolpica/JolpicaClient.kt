@@ -146,9 +146,23 @@ class JolpicaClient {
         seasonTable!!.seasons!!
     }
 
-    suspend fun getRace(year: Int, round: Int) = fetch<Race>(
+    suspend fun getRaces(year: Int, round: Int?) = fetchAll<Race>(
         "results",
-        pathParameters = arrayOf(year.toString(), round.toString()),
+        pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getRaceByDriver(driverId: String) = fetchAll<Race>(
+        "drivers",
+        params = arrayOf(driverId, "results"),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getRaceByConstructor(constructorId: String) = fetchAll<Race>(
+        "constructors",
+        params = arrayOf(constructorId, "results"),
     ) {
         raceTable!!.races!!
     }

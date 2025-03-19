@@ -8,6 +8,21 @@ import com.example.client.jolpica.schema.models.result.Result as JolpicaRaceResu
 import com.example.client.jolpica.schema.models.result.SimpleTime as JolpicaSimpleTime
 import com.example.client.jolpica.schema.models.result.Time as JolpicaTime
 
+fun List<JolpicaRace>.toRaces() = this.groupBy { it.season to it.round }
+    .map { (_, races) ->
+        val race = races.first()
+        Race(
+            season = race.season,
+            round = race.round,
+            url = race.url,
+            name = race.name,
+            circuit = race.circuit.toCircuit(),
+            date = race.date,
+            time = race.time,
+            results = races.flatMap { it.results.map { res -> res.toRaceResult() } }
+        )
+    }
+
 fun JolpicaRace.toRace() = Race(
     season = season,
     round = round,
