@@ -32,8 +32,8 @@ class RaceQueryService : Query {
             val client = JolpicaClient()
             when {
                 year != null -> client.getRaces(year, null).toRaces()
-                driverId != null -> client.getRaceByDriver(driverId).map { it.toRace() }
-                constructorId != null -> client.getRaceByConstructor(constructorId).map { it.toRace() }
+                driverId != null -> client.getRacesByDriver(driverId).map { it.toRace() }
+                constructorId != null -> client.getRacesByConstructor(constructorId).map { it.toRace() }
                 else -> throw AssertionError("unreachable")
             }
         }
