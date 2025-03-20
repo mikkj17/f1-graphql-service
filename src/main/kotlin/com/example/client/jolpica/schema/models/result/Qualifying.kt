@@ -13,6 +13,6 @@ data class Qualifying(
     @SerialName("raceName") val name: String,
     @SerialName("Circuit") val circuit: Circuit,
     val date: String,
-    val time: String,
+    val time: String? = null,
     @SerialName("QualifyingResults") val results: List<QualifyingResult>
 ) : JolpicaModel

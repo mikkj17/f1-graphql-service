@@ -90,11 +90,11 @@ class JolpicaClient {
 
         // Fetch remaining chunks in parallel
         val remainingChunks = coroutineScope {
-            offsets.chunked(5).map { batch ->   // fetch 5 chunks at a time to avoid hitting the rate limit
+            offsets.chunked(3).map { batch ->   // fetch 3 chunks at a time to avoid hitting the rate limit
                 async(Dispatchers.IO) {
-                    batch.map { offset ->
+                    batch.flatMap { offset ->
                         fetchChunk<T>(endpoint, offset, pathParameters, params).data.getModels()
-                    }.flatten()
+                    }
                 }
             }.awaitAll()
         }

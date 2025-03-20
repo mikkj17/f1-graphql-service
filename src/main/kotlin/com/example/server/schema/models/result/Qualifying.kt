@@ -10,6 +10,6 @@ data class Qualifying(
     val name: String,
     val circuit: Circuit,
     val date: String,
-    val time: String,
+    val time: String?,
     val results: List<QualifyingResult>,
 ) : Model

@@ -30,7 +30,7 @@ fun Application.module() {
             )
         }
     }
-    install(Routing) {
+    routing {
         graphQLPostRoute()
         graphiQLRoute()
         graphQLSDLRoute()
