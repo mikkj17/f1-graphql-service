@@ -16,34 +16,21 @@ import com.example.client.jolpica.schema.models.standings.ConstructorStandingLis
 import com.example.client.jolpica.schema.models.standings.DriverStandingList
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.serialization.json.Json
 
 typealias ModelsExtractor<T> = MrData<T>.() -> List<T>
 
-class JolpicaClient {
+class JolpicaClient(
+    private val client: HttpClient
+) {
     private val host = "api.jolpi.ca"
     private val path = "/ergast/f1"
     private val limit = 100
-
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-            })
-        }
-        install(Logging) {
-            level = LogLevel.NONE
-        }
-    }
 
     private suspend inline fun <reified T : JolpicaModel> fetchChunk(
         endpoint: String,

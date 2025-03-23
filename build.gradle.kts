@@ -19,17 +19,20 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.netty)
-    implementation(libs.ktor.client.core)
+    implementation(libs.graphql.server)
+    implementation(libs.koin.core)
+    implementation(libs.koin.logger.slf4j)
+    implementation(libs.koin.ktor)
+    implementation(libs.kotlinx.coroutine.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.logback.classic)
     implementation(libs.ktor.server.config.yaml)
-    implementation(libs.graphql.server)
-    implementation(libs.kotlinx.coroutine.core)
-    testImplementation(libs.ktor.server.test.host)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.logback.classic)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.ktor.server.test.host)
 }

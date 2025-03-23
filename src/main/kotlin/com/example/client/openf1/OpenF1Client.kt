@@ -4,27 +4,14 @@ import com.example.client.openf1.schema.models.OpenF1Model
 import com.example.client.openf1.schema.models.driver.Driver
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonNamingStrategy
 
-class OpenF1Client {
+class OpenF1Client(
+    private val client: HttpClient
+) {
     private val host = "api.openf1.org"
     private val path = "/v1"
-
-    @OptIn(ExperimentalSerializationApi::class)
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                namingStrategy = JsonNamingStrategy.SnakeCase
-            })
-        }
-    }
 
     private suspend inline fun <reified T : OpenF1Model> fetch(
         endpoint: String,

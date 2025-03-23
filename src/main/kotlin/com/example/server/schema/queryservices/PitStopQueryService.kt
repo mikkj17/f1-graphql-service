@@ -5,12 +5,14 @@ import com.example.server.schema.models.pitstop.RacePitStop
 import com.example.shared.mappers.toRacePitStop
 import com.expediagroup.graphql.server.operations.Query
 
-class PitStopQueryService : Query {
+class PitStopQueryService(
+    private val jolpicaClient: JolpicaClient
+) : Query {
     private val _cache = mutableMapOf<Triple<Int, Int, List<String>?>, RacePitStop>()
 
     suspend fun pitStops(year: Int, round: Int, drivers: List<String>? = null): RacePitStop {
         return _cache.getOrPut(Triple(year, round, drivers)) {
-            JolpicaClient()
+            jolpicaClient
                 .getPitStops(year, round)
                 .toRacePitStop(drivers)
         }

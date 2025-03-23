@@ -5,7 +5,9 @@ import com.example.server.schema.models.schedule.Schedule
 import com.example.shared.mappers.toSchedule
 import com.expediagroup.graphql.server.operations.Query
 
-class ScheduleQueryService : Query {
+class ScheduleQueryService(
+    private val jolpicaClient: JolpicaClient
+) : Query {
     private val cache = mutableMapOf<Triple<Int?, String?, String?>, List<Schedule>>()
 
     suspend fun schedules(
@@ -20,11 +22,10 @@ class ScheduleQueryService : Query {
         return cache.getOrPut(
             Triple(year, driverId, constructorId)
         ) {
-            val client = JolpicaClient()
             val schedules = when {
-                year != null -> client.getSchedules(year)
-                driverId != null -> client.getSchedulesByDriver(driverId)
-                constructorId != null -> client.getSchedulesByConstructor(constructorId)
+                year != null -> jolpicaClient.getSchedules(year)
+                driverId != null -> jolpicaClient.getSchedulesByDriver(driverId)
+                constructorId != null -> jolpicaClient.getSchedulesByConstructor(constructorId)
                 else -> throw AssertionError("unreachable")
             }
 

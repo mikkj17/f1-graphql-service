@@ -7,18 +7,20 @@ import com.example.shared.mappers.toConstructorStandingList
 import com.example.shared.mappers.toDriverStandingList
 import com.expediagroup.graphql.server.operations.Query
 
-class StandingsQueryService : Query {
+class StandingsQueryService(
+    private val jolpicaClient: JolpicaClient
+) : Query {
     private val _driverCache = mutableMapOf<Pair<Int, Int?>, DriverStandingList>()
     private val _constructorCache = mutableMapOf<Pair<Int, Int?>, ConstructorStandingList>()
 
     suspend fun driverStandings(year: Int, round: Int? = null) = _driverCache.getOrPut(year to round) {
-        JolpicaClient()
+        jolpicaClient
             .getDriverStandings(year, round)
             .toDriverStandingList()
     }
 
     suspend fun constructorStandings(year: Int, round: Int? = null) = _constructorCache.getOrPut(year to round) {
-        JolpicaClient()
+        jolpicaClient
             .getConstructorStandings(year, round)
             .toConstructorStandingList()
     }

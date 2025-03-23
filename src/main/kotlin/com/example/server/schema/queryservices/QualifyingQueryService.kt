@@ -6,12 +6,14 @@ import com.example.shared.mappers.toQualifying
 import com.example.shared.mappers.toQualifyings
 import com.expediagroup.graphql.server.operations.Query
 
-class QualifyingQueryService : Query {
+class QualifyingQueryService(
+    private val jolpicaClient: JolpicaClient
+) : Query {
     private val _qualifyingCache = mutableMapOf<Pair<Int, Int>, Qualifying>()
     private val _qualifyingsCache = mutableMapOf<Triple<Int?, String?, String?>, List<Qualifying>>()
 
     suspend fun qualifying(year: Int, round: Int) = _qualifyingCache.getOrPut(year to round) {
-        JolpicaClient()
+        jolpicaClient
             .getQualifyings(year, round)
             .first()
             .toQualifying()
@@ -29,11 +31,10 @@ class QualifyingQueryService : Query {
         return _qualifyingsCache.getOrPut(
             Triple(year, driverId, constructorId)
         ) {
-            val client = JolpicaClient()
             when {
-                year != null -> client.getQualifyings(year, null).toQualifyings()
-                driverId != null -> client.getQualifyingsByDriver(driverId).map { it.toQualifying() }
-                constructorId != null -> client.getQualifyingsByConstructor(constructorId).map { it.toQualifying() }
+                year != null -> jolpicaClient.getQualifyings(year, null).toQualifyings()
+                driverId != null -> jolpicaClient.getQualifyingsByDriver(driverId).map { it.toQualifying() }
+                constructorId != null -> jolpicaClient.getQualifyingsByConstructor(constructorId).map { it.toQualifying() }
                 else -> throw AssertionError("unreachable")
             }
         }

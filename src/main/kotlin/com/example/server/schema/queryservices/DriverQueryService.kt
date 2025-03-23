@@ -8,7 +8,10 @@ import com.example.shared.mappers.toDetailedDriver
 import com.example.shared.mappers.toDriver
 import com.expediagroup.graphql.server.operations.Query
 
-class DriverQueryService : Query {
+class DriverQueryService(
+    private val jolpicaClient: JolpicaClient,
+    private val openF1Client: OpenF1Client
+) : Query {
     private val driverListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Driver>>()
     private val driverCache = mutableMapOf<String, DriverDetail?>()
 
@@ -22,11 +25,10 @@ class DriverQueryService : Query {
         }
 
         return driverListCache.getOrPut(Triple(year, round, constructorId)) {
-            val client = JolpicaClient()
             val drivers = if (constructorId != null)
-                client.getDriversByConstructor(constructorId)
+                jolpicaClient.getDriversByConstructor(constructorId)
             else
-                client.getDrivers(year, round)
+                jolpicaClient.getDrivers(year, round)
 
             drivers.map { it.toDriver() }
         }
@@ -34,10 +36,10 @@ class DriverQueryService : Query {
 
     suspend fun driver(driverId: String): DriverDetail? {
         return driverCache.getOrPut(driverId) {
-            JolpicaClient().getDriver(driverId)
+            jolpicaClient.getDriver(driverId)
                 .takeIf { it.code != null }
                 ?.let { driver ->
-                    OpenF1Client().getDriver(driver.code!!)
+                    openF1Client.getDriver(driver.code!!)
                         ?.let(driver::toDetailedDriver)
                 }
         }

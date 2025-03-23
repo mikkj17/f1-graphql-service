@@ -5,7 +5,9 @@ import com.example.server.schema.models.constructor.Constructor
 import com.example.shared.mappers.toConstructor
 import com.expediagroup.graphql.server.operations.Query
 
-class ConstructorQueryService : Query {
+class ConstructorQueryService(
+    private val jolpicaClient: JolpicaClient
+) : Query {
     private val constructorListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Constructor>>()
 
     suspend fun constructors(year: Int? = null, round: Int? = null, driverId: String? = null): List<Constructor> {
@@ -18,11 +20,10 @@ class ConstructorQueryService : Query {
         }
 
         return constructorListCache.getOrPut(Triple(year, round, driverId)) {
-            val client = JolpicaClient()
             val constructors = if (driverId != null)
-                client.getConstructorsByDriver(driverId)
+                jolpicaClient.getConstructorsByDriver(driverId)
             else
-                client.getConstructors(year, round)
+                jolpicaClient.getConstructors(year, round)
 
             constructors.map { it.toConstructor() }
         }

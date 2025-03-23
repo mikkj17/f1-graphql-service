@@ -6,12 +6,14 @@ import com.example.shared.mappers.toRace
 import com.example.shared.mappers.toRaces
 import com.expediagroup.graphql.server.operations.Query
 
-class RaceQueryService : Query {
+class RaceQueryService(
+    private val jolpicaClient: JolpicaClient
+) : Query {
     private val _raceCache = mutableMapOf<Pair<Int, Int>, Race>()
     private val _racesCache = mutableMapOf<Triple<Int?, String?, String?>, List<Race>>()
 
     suspend fun race(year: Int, round: Int) = _raceCache.getOrPut(year to round) {
-        JolpicaClient()
+        jolpicaClient
             .getRaces(year, round)
             .first()
             .toRace()
@@ -29,11 +31,10 @@ class RaceQueryService : Query {
         return _racesCache.getOrPut(
             Triple(year, driverId, constructorId)
         ) {
-            val client = JolpicaClient()
             when {
-                year != null -> client.getRaces(year, null).toRaces()
-                driverId != null -> client.getRacesByDriver(driverId).map { it.toRace() }
-                constructorId != null -> client.getRacesByConstructor(constructorId).map { it.toRace() }
+                year != null -> jolpicaClient.getRaces(year, null).toRaces()
+                driverId != null -> jolpicaClient.getRacesByDriver(driverId).map { it.toRace() }
+                constructorId != null -> jolpicaClient.getRacesByConstructor(constructorId).map { it.toRace() }
                 else -> throw AssertionError("unreachable")
             }
         }
