@@ -13,7 +13,7 @@ class DriverQueryService(
     private val openF1Client: OpenF1Client
 ) : Query {
     private val driverListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Driver>>()
-    private val driverCache = mutableMapOf<String, DriverDetail?>()
+    private val driverCache = mutableMapOf<String, DriverDetail>()
 
     suspend fun drivers(year: Int? = null, round: Int? = null, constructorId: String? = null): List<Driver> {
         require(!(constructorId != null && (year != null || round != null))) {
@@ -34,14 +34,11 @@ class DriverQueryService(
         }
     }
 
-    suspend fun driver(driverId: String): DriverDetail? {
-        return driverCache.getOrPut(driverId) {
-            jolpicaClient.getDriver(driverId)
-                .takeIf { it.code != null }
-                ?.let { driver ->
-                    openF1Client.getDriver(driver.code!!)
-                        ?.let(driver::toDetailedDriver)
-                }
+    suspend fun driver(driverId: String) = driverCache.getOrPut(driverId) {
+        jolpicaClient.getDriver(driverId).let { driver ->
+            driver.toDetailedDriver(
+                driver.code?.let { openF1Client.getDriver(it) }
+            )
         }
     }
 }

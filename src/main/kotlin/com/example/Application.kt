@@ -28,16 +28,16 @@ fun Application.module() {
         schema {
             packages = listOf("com.example")
             queries = listOf(
-                inject<DriverQueryService>().value,
-                inject<ConstructorQueryService>().value,
                 inject<CircuitQueryService>().value,
-                inject<SeasonQueryService>().value,
-                inject<RaceQueryService>().value,
-                inject<QualifyingQueryService>().value,
-                inject<ScheduleQueryService>().value,
-                inject<StandingsQueryService>().value,
+                inject<ConstructorQueryService>().value,
+                inject<DriverQueryService>().value,
                 inject<LapQueryService>().value,
                 inject<PitStopQueryService>().value,
+                inject<QualifyingQueryService>().value,
+                inject<RaceQueryService>().value,
+                inject<ScheduleQueryService>().value,
+                inject<SeasonQueryService>().value,
+                inject<StandingsQueryService>().value,
             )
         }
     }

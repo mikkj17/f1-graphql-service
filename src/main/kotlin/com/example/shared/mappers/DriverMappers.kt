@@ -2,6 +2,7 @@ package com.example.shared.mappers
 
 import com.example.server.schema.models.driver.Driver
 import com.example.server.schema.models.driver.DriverDetail
+import com.example.server.schema.models.driver.DriverDetails
 import com.example.client.jolpica.schema.models.driver.Driver as JolpicaDriver
 import com.example.client.openf1.schema.models.driver.Driver as OpenF1Driver
 
@@ -16,7 +17,18 @@ fun JolpicaDriver.toDriver() = Driver(
     nationality = nationality,
 )
 
-fun JolpicaDriver.toDetailedDriver(openF1Driver: OpenF1Driver) = DriverDetail(
+fun OpenF1Driver.toDriverDetails() = DriverDetails(
+    driverNumber = driverNumber,
+    broadCastName = broadcastName,
+    countryCode = countryCode,
+    fullName = fullName,
+    headshotUrl = headshotUrl.substringBefore(".transform"),
+    nameAcronym = nameAcronym,
+    teamColour = teamColour,
+    teamName = teamName
+)
+
+fun JolpicaDriver.toDetailedDriver(openF1Driver: OpenF1Driver?) = DriverDetail(
     id = id,
     number = number,
     code = code,
@@ -25,12 +37,5 @@ fun JolpicaDriver.toDetailedDriver(openF1Driver: OpenF1Driver) = DriverDetail(
     familyName = familyName,
     dateOfBirth = dateOfBirth,
     nationality = nationality,
-    driverNumber = openF1Driver.driverNumber,
-    broadCastName = openF1Driver.broadcastName,
-    countryCode = openF1Driver.countryCode,
-    fullName = openF1Driver.fullName,
-    headshotUrl = openF1Driver.headshotUrl.substringBefore(".transform"),
-    nameAcronym = openF1Driver.nameAcronym,
-    teamColour = openF1Driver.teamColour,
-    teamName = openF1Driver.teamName
+    details = openF1Driver?.toDriverDetails(),
 )

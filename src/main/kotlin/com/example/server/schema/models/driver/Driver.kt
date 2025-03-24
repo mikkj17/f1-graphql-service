@@ -2,7 +2,7 @@ package com.example.server.schema.models.driver
 
 import com.example.server.schema.models.Model
 
-open class Driver(
+data class Driver(
     val id: String,
     val number: Int?,
     val code: String?,
