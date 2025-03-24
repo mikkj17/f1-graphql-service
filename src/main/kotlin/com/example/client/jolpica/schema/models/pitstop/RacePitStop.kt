@@ -14,5 +14,5 @@ data class RacePitStop(
     @SerialName("Circuit") val circuit: Circuit,
     val date: String,
     val time: String,
-    @SerialName("PitStops") var pitStops: List<PitStop>
+    @SerialName("PitStops") val stops: List<PitStop>
 ) : JolpicaModel

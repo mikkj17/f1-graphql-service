@@ -13,7 +13,7 @@ fun JolpicaRacePitStop.toRacePitStop(drivers: List<String>?) = RacePitStop(
     circuit = circuit.toCircuit(),
     date = date,
     time = time,
-    pitStops = pitStops
+    stops = stops
         .filter { drivers == null || it.driverId in drivers }
         .map { it.toPitStop() }
 )

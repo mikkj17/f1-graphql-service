@@ -54,12 +54,12 @@ class JolpicaClient(
         pathParameters: Array<String> = emptyArray(),
         params: Array<String> = emptyArray(),
         crossinline getModels: ModelsExtractor<T>,
-    ): T {
+    ): T? {
         val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters, params)
         return response
             .data
             .getModels()
-            .first()
+            .firstOrNull()
     }
 
     private suspend inline fun <reified T : JolpicaModel> fetchAll(

@@ -11,5 +11,5 @@ data class RacePitStop(
     val circuit: Circuit,
     val date: String,
     val time: String,
-    val pitStops: List<PitStop>
+    val stops: List<PitStop>
 ) : Model
