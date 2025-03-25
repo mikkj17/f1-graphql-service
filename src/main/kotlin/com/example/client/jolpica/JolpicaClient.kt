@@ -154,6 +154,13 @@ class JolpicaClient(
         raceTable!!.races!!
     }
 
+    suspend fun getMostRecentRace() = fetch<Race>(
+        "results",
+        pathParameters = arrayOf("current", "last"),
+    ) {
+        raceTable!!.races!!
+    }
+
     suspend fun getQualifyings(year: Int, round: Int?) = fetchAll<Qualifying>(
         "qualifying",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),

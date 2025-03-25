@@ -9,14 +9,14 @@ import com.expediagroup.graphql.server.operations.Query
 class RaceQueryService(
     private val jolpicaClient: JolpicaClient
 ) : Query {
-    private val _raceCache = mutableMapOf<Pair<Int, Int>, Race>()
+    private val _raceCache = mutableMapOf<Pair<Int, Int>, Race?>()
     private val _racesCache = mutableMapOf<Triple<Int?, String?, String?>, List<Race>>()
 
     suspend fun race(year: Int, round: Int) = _raceCache.getOrPut(year to round) {
         jolpicaClient
             .getRaces(year, round)
-            .first()
-            .toRace()
+            .firstOrNull()
+            ?.toRace()
     }
 
     suspend fun races(
@@ -39,4 +39,8 @@ class RaceQueryService(
             }
         }
     }
+
+    suspend fun mostRecentRace() = jolpicaClient
+        .getMostRecentRace()
+        ?.toRace()
 }
