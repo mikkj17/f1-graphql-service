@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConstructorStanding(
-    val position: Int,
+    val position: Int? = null,
     val positionText: String,
     val points: Float,
     val wins: Int,
