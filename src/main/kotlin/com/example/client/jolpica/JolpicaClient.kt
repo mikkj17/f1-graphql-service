@@ -154,6 +154,13 @@ class JolpicaClient(
         raceTable!!.races!!
     }
 
+    suspend fun getRacesByCircuit(circuitId: String) = fetchAll<Race>(
+        "circuits",
+        params = arrayOf(circuitId, "results"),
+    ) {
+        raceTable!!.races!!
+    }
+
     suspend fun getMostRecentRace() = fetch<Race>(
         "results",
         pathParameters = arrayOf("current", "last"),
@@ -178,6 +185,13 @@ class JolpicaClient(
     suspend fun getQualifyingsByConstructor(constructorId: String) = fetchAll<Qualifying>(
         "constructors",
         params = arrayOf(constructorId, "qualifying"),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getQualifyingsByCircuit(circuitId: String) = fetchAll<Qualifying>(
+        "circuits",
+        params = arrayOf(circuitId, "qualifying"),
     ) {
         raceTable!!.races!!
     }

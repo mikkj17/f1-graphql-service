@@ -9,8 +9,15 @@ import com.expediagroup.graphql.server.operations.Query
 class RaceQueryService(
     private val jolpicaClient: JolpicaClient
 ) : Query {
+    private data class CacheKey(
+        val year: Int?,
+        val driverId: String?,
+        val constructorId: String?,
+        val circuitId: String?,
+    )
+
     private val _raceCache = mutableMapOf<Pair<Int, Int>, Race?>()
-    private val _racesCache = mutableMapOf<Triple<Int?, String?, String?>, List<Race>>()
+    private val _racesCache = mutableMapOf<CacheKey, List<Race>>()
 
     suspend fun race(year: Int, round: Int) = _raceCache.getOrPut(year to round) {
         jolpicaClient
@@ -23,18 +30,20 @@ class RaceQueryService(
         year: Int? = null,
         driverId: String? = null,
         constructorId: String? = null,
+        circuitId: String? = null,
     ): List<Race> {
-        require(listOf(year, driverId, constructorId).count { it != null } == 1) {
-            "exactly one of year, driverId, or constructorId must be provided."
+        require(listOf(year, driverId, constructorId, circuitId).count { it != null } == 1) {
+            "exactly one of year, driverId, constructorId, or circuitId must be provided."
         }
 
         return _racesCache.getOrPut(
-            Triple(year, driverId, constructorId)
+            CacheKey(year, driverId, constructorId, circuitId)
         ) {
             when {
                 year != null -> jolpicaClient.getRaces(year, null).toRaces()
-                driverId != null -> jolpicaClient.getRacesByDriver(driverId).map { it.toRace() }
-                constructorId != null -> jolpicaClient.getRacesByConstructor(constructorId).map { it.toRace() }
+                driverId != null -> jolpicaClient.getRacesByDriver(driverId).toRaces()
+                constructorId != null -> jolpicaClient.getRacesByConstructor(constructorId).toRaces()
+                circuitId != null -> jolpicaClient.getRacesByCircuit(circuitId).toRaces()
                 else -> throw AssertionError("unreachable")
             }
         }

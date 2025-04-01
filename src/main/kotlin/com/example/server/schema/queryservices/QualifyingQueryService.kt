@@ -9,8 +9,15 @@ import com.expediagroup.graphql.server.operations.Query
 class QualifyingQueryService(
     private val jolpicaClient: JolpicaClient
 ) : Query {
+    private data class CacheKey(
+        val year: Int?,
+        val driverId: String?,
+        val constructorId: String?,
+        val circuitId: String?,
+    )
+
     private val _qualifyingCache = mutableMapOf<Pair<Int, Int>, Qualifying>()
-    private val _qualifyingsCache = mutableMapOf<Triple<Int?, String?, String?>, List<Qualifying>>()
+    private val _qualifyingsCache = mutableMapOf<CacheKey, List<Qualifying>>()
 
     suspend fun qualifying(year: Int, round: Int) = _qualifyingCache.getOrPut(year to round) {
         jolpicaClient
@@ -23,18 +30,20 @@ class QualifyingQueryService(
         year: Int? = null,
         driverId: String? = null,
         constructorId: String? = null,
+        circuitId: String? = null,
     ): List<Qualifying> {
-        require(listOf(year, driverId, constructorId).count { it != null } == 1) {
-            "exactly one of year, driverId, or constructorId must be provided."
+        require(listOf(year, driverId, constructorId, circuitId).count { it != null } == 1) {
+            "exactly one of year, driverId, constructorId, circuitId must be provided."
         }
 
         return _qualifyingsCache.getOrPut(
-            Triple(year, driverId, constructorId)
+            CacheKey(year, driverId, constructorId, circuitId)
         ) {
             when {
                 year != null -> jolpicaClient.getQualifyings(year, null).toQualifyings()
-                driverId != null -> jolpicaClient.getQualifyingsByDriver(driverId).map { it.toQualifying() }
-                constructorId != null -> jolpicaClient.getQualifyingsByConstructor(constructorId).map { it.toQualifying() }
+                driverId != null -> jolpicaClient.getQualifyingsByDriver(driverId).toQualifyings()
+                constructorId != null -> jolpicaClient.getQualifyingsByConstructor(constructorId).toQualifyings()
+                circuitId != null -> jolpicaClient.getQualifyingsByCircuit(circuitId).toQualifyings()
                 else -> throw AssertionError("unreachable")
             }
         }
