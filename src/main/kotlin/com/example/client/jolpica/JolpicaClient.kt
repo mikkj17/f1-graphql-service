@@ -18,10 +18,8 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
+import kotlin.math.pow
 
 typealias ModelsExtractor<T> = MrData<T>.() -> List<T>
 
@@ -32,21 +30,41 @@ class JolpicaClient(
     private val path = "/ergast/f1"
     private val limit = 100
 
+    private fun buildUrl(
+        endpoint: String,
+        offset: Int,
+        pathParameters: Array<String>,
+        params: Array<String>,
+    ) = URLBuilder().apply {
+        protocol = URLProtocol.HTTPS
+        host = this@JolpicaClient.host
+        path(path, *pathParameters, endpoint, *params)
+        parameters.append("limit", limit.toString())
+        parameters.append("offset", offset.toString())
+    }
+
     private suspend inline fun <reified T : JolpicaModel> fetchChunk(
         endpoint: String,
         offset: Int,
         pathParameters: Array<String>,
         params: Array<String>,
     ): ApiResponse<T> {
-        val url = URLBuilder().apply {
-            protocol = URLProtocol.HTTPS
-            host = this@JolpicaClient.host
-            path(path, *pathParameters, endpoint, *params)
-            parameters.append("limit", limit.toString())
-            parameters.append("offset", offset.toString())
+        val url = buildUrl(endpoint, offset, pathParameters, params)
+
+        var attempt = 0
+        while (attempt < 5) {
+            val response = client.get(url.buildString())
+            when (response.status) {
+                HttpStatusCode.TooManyRequests -> {
+                    delay((2.0.pow(attempt.toDouble()) * 100L).toLong())
+                    attempt++
+                }
+
+                else -> return response.body()
+            }
         }
 
-        return client.get(url.buildString()).body()
+        throw RuntimeException("Rate limit retry failed after 5 attempts")
     }
 
     private suspend inline fun <reified T : JolpicaModel> fetch(
@@ -69,7 +87,7 @@ class JolpicaClient(
         crossinline getModels: ModelsExtractor<T>,
     ): List<T> {
         // Fetch the first chunk and total records
-        val response: ApiResponse<T> = fetchChunk(endpoint, 0, pathParameters, params)
+        val response = fetchChunk<T>(endpoint, 0, pathParameters, params)
         val firstChunk = response.data.getModels()
 
         // Calculate offsets for the remaining chunks
@@ -77,11 +95,9 @@ class JolpicaClient(
 
         // Fetch remaining chunks in parallel
         val remainingChunks = coroutineScope {
-            offsets.chunked(3).map { batch ->   // fetch 3 chunks at a time to avoid hitting the rate limit
+            offsets.map { offset ->
                 async(Dispatchers.IO) {
-                    batch.flatMap { offset ->
-                        fetchChunk<T>(endpoint, offset, pathParameters, params).data.getModels()
-                    }
+                    fetchChunk<T>(endpoint, offset, pathParameters, params).data.getModels()
                 }
             }.awaitAll()
         }
