@@ -18,7 +18,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
 import kotlin.math.pow
 
 typealias ModelsExtractor<T> = MrData<T>.() -> List<T>
@@ -93,17 +93,13 @@ class JolpicaClient(
         // Calculate offsets for the remaining chunks
         val offsets = (limit until response.data.total step limit)
 
-        // Fetch remaining chunks in parallel
-        val remainingChunks = coroutineScope {
-            offsets.map { offset ->
-                async(Dispatchers.IO) {
-                    fetchChunk<T>(endpoint, offset, pathParameters, params).data.getModels()
-                }
-            }.awaitAll()
+        // Fetch remaining chunks
+        val remainingChunks = offsets.flatMap { offset ->
+            fetchChunk<T>(endpoint, offset, pathParameters, params).data.getModels()
         }
 
         // Combine all chunks
-        return firstChunk + remainingChunks.flatten()
+        return firstChunk + remainingChunks
     }
 
     suspend fun getDrivers(year: Int?, round: Int?) = fetchAll<Driver>(
