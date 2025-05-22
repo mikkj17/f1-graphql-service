@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Driver(
     val broadcastName: String,
-    val countryCode: String,
+    val countryCode: String?,
     val driverNumber: Int,
     val fullName: String,
     val headshotUrl: String,
