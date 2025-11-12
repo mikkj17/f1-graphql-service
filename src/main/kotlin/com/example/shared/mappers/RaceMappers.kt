@@ -35,7 +35,7 @@ fun JolpicaRace.toRace() = Race(
 )
 
 fun JolpicaRaceResult.toRaceResult() = RaceResult(
-    number = number,
+    number = number?.toIntOrNull(),
     position = position,
     positionText = positionText,
     points = points,

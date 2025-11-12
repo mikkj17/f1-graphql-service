@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Driver(
     @SerialName("driverId") val id: String,
-    @SerialName("permanentNumber") val number: Int? = null,
+    @SerialName("permanentNumber") val number: String? = null,
     val code: String? = null,
     val url: String,
     val givenName: String,
