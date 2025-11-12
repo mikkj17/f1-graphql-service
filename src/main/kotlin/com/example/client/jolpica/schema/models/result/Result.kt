@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Result(
-    val number: Int,
+    val number: String? = null,
     val position: Int,
     val positionText: String,
     val points: Float,

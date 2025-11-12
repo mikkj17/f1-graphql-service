@@ -8,7 +8,7 @@ import com.example.client.openf1.schema.models.driver.Driver as OpenF1Driver
 
 fun JolpicaDriver.toDriver() = Driver(
     id = id,
-    number = number,
+    number = number?.toIntOrNull(),
     code = code,
     url = url,
     givenName = givenName,
@@ -30,7 +30,7 @@ fun OpenF1Driver.toDriverDetails() = DriverDetails(
 
 fun JolpicaDriver.toDetailedDriver(openF1Driver: OpenF1Driver?) = DriverDetail(
     id = id,
-    number = number,
+    number = number?.toIntOrNull(),
     code = code,
     url = url,
     givenName = givenName,

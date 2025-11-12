@@ -4,7 +4,7 @@ import com.example.server.schema.models.constructor.Constructor
 import com.example.server.schema.models.driver.Driver
 
 data class RaceResult(
-    val number: Int,
+    val number: Int?,
     val position: Int,
     val positionText: String,
     val points: Float,
