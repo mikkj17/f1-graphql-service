@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Location(
-    @SerialName("lat") val latitude: Float,
-    @SerialName("long") val longitude: Float,
+    @SerialName("lat") val latitude: Float? = null,
+    @SerialName("long") val longitude: Float? = null,
     val locality: String,
     val country: String,
 )

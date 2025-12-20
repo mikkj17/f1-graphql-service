@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Constructor(
     @SerialName("constructorId") val id: String,
-    val url: String,
+    val url: String? = null,
     val name: String,
     val nationality: String,
 ) : JolpicaModel
