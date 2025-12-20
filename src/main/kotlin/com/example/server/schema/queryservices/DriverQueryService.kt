@@ -1,19 +1,16 @@
 package com.example.server.schema.queryservices
 
 import com.example.client.jolpica.JolpicaClient
-import com.example.client.openf1.OpenF1Client
 import com.example.server.schema.models.driver.Driver
-import com.example.server.schema.models.driver.DriverDetail
-import com.example.shared.mappers.toDetailedDriver
 import com.example.shared.mappers.toDriver
 import com.expediagroup.graphql.server.operations.Query
+import io.ktor.server.plugins.*
 
 class DriverQueryService(
     private val jolpicaClient: JolpicaClient,
-    private val openF1Client: OpenF1Client
 ) : Query {
+    private val driverCache = mutableMapOf<String, Driver>()
     private val driverListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Driver>>()
-    private val driverCache = mutableMapOf<String, DriverDetail?>()
 
     suspend fun drivers(year: Int? = null, round: Int? = null, constructorId: String? = null): List<Driver> {
         require(!(constructorId != null && (year != null || round != null))) {
@@ -35,10 +32,6 @@ class DriverQueryService(
     }
 
     suspend fun driver(driverId: String) = driverCache.getOrPut(driverId) {
-        jolpicaClient.getDriver(driverId).let { driver ->
-            driver?.toDetailedDriver(
-                openF1Driver = driver.code?.let { openF1Client.getDriver(it) }
-            )
-        }
+        jolpicaClient.getDriver(driverId)?.toDriver() ?: throw NotFoundException("Driver $driverId was not found")
     }
 }

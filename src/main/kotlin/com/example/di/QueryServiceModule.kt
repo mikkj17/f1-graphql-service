@@ -7,7 +7,7 @@ val queryServiceModule = module {
     // Query Services
     single { CircuitQueryService(get()) }
     single { ConstructorQueryService(get()) }
-    single { DriverQueryService(get(), get()) }
+    single { DriverQueryService(get()) }
     single { LapQueryService(get()) }
     single { PitStopQueryService(get()) }
     single { QualifyingQueryService(get()) }

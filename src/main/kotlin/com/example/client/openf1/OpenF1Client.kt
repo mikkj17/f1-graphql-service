@@ -1,7 +1,6 @@
 package com.example.client.openf1
 
 import com.example.client.openf1.schema.models.OpenF1Model
-import com.example.client.openf1.schema.models.driver.Driver
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -30,13 +29,4 @@ class OpenF1Client(
             .get(url.buildString())
             .body<List<T>>()
     }
-
-    suspend fun getDriver(nameAcronym: String) = fetch<Driver>(
-        "drivers",
-        mapOf(
-            "meeting_key" to "latest",
-            "name_acronym" to nameAcronym,
-        )
-    )
-        .firstOrNull()
 }
