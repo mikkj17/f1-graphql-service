@@ -5,6 +5,7 @@ import com.example.server.schema.models.result.Race
 import com.example.shared.mappers.toRace
 import com.example.shared.mappers.toRaces
 import com.expediagroup.graphql.server.operations.Query
+import io.ktor.server.plugins.*
 
 class RaceQueryService(
     private val jolpicaClient: JolpicaClient
@@ -16,7 +17,7 @@ class RaceQueryService(
         val circuitId: String?,
     )
 
-    private val _raceCache = mutableMapOf<Pair<Int, Int>, Race?>()
+    private val _raceCache = mutableMapOf<Pair<Int, Int>, Race>()
     private val _racesCache = mutableMapOf<CacheKey, List<Race>>()
 
     suspend fun race(year: Int, round: Int) = _raceCache.getOrPut(year to round) {
@@ -24,6 +25,7 @@ class RaceQueryService(
             .getRaces(year, round)
             .firstOrNull()
             ?.toRace()
+            ?: throw NotFoundException("No race found for $year, $round")
     }
 
     suspend fun races(
@@ -52,4 +54,5 @@ class RaceQueryService(
     suspend fun mostRecentRace() = jolpicaClient
         .getMostRecentRace()
         ?.toRace()
+        ?: throw NotFoundException("No recent race found")
 }
