@@ -10,6 +10,7 @@ import com.example.client.jolpica.schema.models.lap.RaceLaps
 import com.example.client.jolpica.schema.models.pitstop.RacePitStop
 import com.example.client.jolpica.schema.models.result.Qualifying
 import com.example.client.jolpica.schema.models.result.Race
+import com.example.client.jolpica.schema.models.result.Sprint
 import com.example.client.jolpica.schema.models.schedule.Schedule
 import com.example.client.jolpica.schema.models.season.Season
 import com.example.client.jolpica.schema.models.standings.ConstructorStandingList
@@ -176,6 +177,13 @@ class JolpicaClient(
     suspend fun getMostRecentRace() = fetch<Race>(
         "results",
         pathParameters = arrayOf("current", "last"),
+    ) {
+        raceTable!!.races!!
+    }
+
+    suspend fun getSprints(year: Int, round: Int?) = fetchAll<Sprint>(
+        "sprint",
+        pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         raceTable!!.races!!
     }

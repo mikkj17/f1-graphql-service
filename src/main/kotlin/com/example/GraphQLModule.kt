@@ -34,6 +34,7 @@ fun Application.graphQLModule() {
                 inject<PitStopQueryService>().value,
                 inject<QualifyingQueryService>().value,
                 inject<RaceQueryService>().value,
+                inject<SprintQueryService>().value,
                 inject<ScheduleQueryService>().value,
                 inject<SeasonQueryService>().value,
                 inject<StandingsQueryService>().value,

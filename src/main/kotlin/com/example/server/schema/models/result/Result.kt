@@ -3,7 +3,7 @@ package com.example.server.schema.models.result
 import com.example.server.schema.models.constructor.Constructor
 import com.example.server.schema.models.driver.Driver
 
-data class RaceResult(
+data class Result(
     val number: Int?,
     val position: Int,
     val positionText: String,

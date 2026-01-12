@@ -19,7 +19,7 @@ fun List<JolpicaRace>.toRaces() = this.groupBy { it.season to it.round }
             circuit = race.circuit.toCircuit(),
             date = race.date,
             time = race.time,
-            results = races.flatMap { it.results.map { res -> res.toRaceResult() } }
+            results = races.flatMap { it.results.map { res -> res.toResult() } }
         )
     }
 
@@ -31,10 +31,10 @@ fun JolpicaRace.toRace() = Race(
     circuit = circuit.toCircuit(),
     date = date,
     time = time,
-    results = results.map { it.toRaceResult() }
+    results = results.map { it.toResult() }
 )
 
-fun JolpicaRaceResult.toRaceResult() = RaceResult(
+fun JolpicaRaceResult.toResult() = Result(
     number = number?.toIntOrNull(),
     position = position,
     positionText = positionText,
