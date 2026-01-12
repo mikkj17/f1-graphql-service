@@ -12,6 +12,7 @@ val queryServiceModule = module {
     single { PitStopQueryService(get()) }
     single { QualifyingQueryService(get()) }
     single { RaceQueryService(get()) }
+    single { SprintQueryService(get()) }
     single { ScheduleQueryService(get()) }
     single { SeasonQueryService(get()) }
     single { StandingsQueryService(get()) }

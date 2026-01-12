@@ -2,7 +2,7 @@ package com.example.server.schema.models.result
 
 import com.example.server.schema.models.circuit.Circuit
 
-data class Race(
+data class Sprint(
     val season: Int,
     val round: Int,
     val url: String,
