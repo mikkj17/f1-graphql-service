@@ -216,9 +216,9 @@ class JolpicaClient(
         raceTable!!.races!!
     }
 
-    suspend fun getSchedules(year: Int) = fetchAll<Schedule>(
+    suspend fun getSchedules(year: Int, round: Int?) = fetchAll<Schedule>(
         "races",
-        pathParameters = arrayOf(year.toString()),
+        pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         raceTable!!.races!!
     }
