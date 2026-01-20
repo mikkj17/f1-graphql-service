@@ -1,6 +1,6 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.result.Sprint
 import com.example.shared.mappers.toSprint
 import com.example.shared.mappers.toSprints
@@ -8,7 +8,7 @@ import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.plugins.*
 
 class SprintQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val _sprintCache = mutableMapOf<Pair<Int, Int>, Sprint>()
     private val _sprintsCache = mutableMapOf<Int, List<Sprint>>()

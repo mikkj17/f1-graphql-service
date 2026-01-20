@@ -1,12 +1,12 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.circuit.Circuit
 import com.example.shared.mappers.toCircuit
 import com.expediagroup.graphql.server.operations.Query
 
 class CircuitQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val _cache = mutableMapOf<Pair<Int?, Int?>, List<Circuit>>()
 

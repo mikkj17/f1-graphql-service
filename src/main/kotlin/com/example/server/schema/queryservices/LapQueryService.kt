@@ -1,12 +1,12 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.lap.RaceLaps
 import com.example.shared.mappers.toRaceLaps
 import com.expediagroup.graphql.server.operations.Query
 
 class LapQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val _cache = mutableMapOf<Triple<Int, Int, List<String>?>, RaceLaps>()
 

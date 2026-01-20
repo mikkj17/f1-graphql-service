@@ -1,12 +1,12 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.season.Season
 import com.example.shared.mappers.toSeason
 import com.expediagroup.graphql.server.operations.Query
 
 class SeasonQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private var _cache: List<Season>? = null
 
