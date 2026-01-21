@@ -2,6 +2,7 @@ package com.example.server.schema.queryservices
 
 import com.example.client.jolpica.IJolpicaClient
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
@@ -48,6 +49,18 @@ class CircuitQueryServiceTest {
 
             assertEquals(1, result.size)
             assertEquals("monaco", result[0].id)
+        }
+    }
+
+    @Test
+    fun `circuits should use cache`() {
+        runBlocking {
+            coEvery { jolpicaClient.getCircuits(2023, 6) } returns listOf(sampleJolpicaCircuit)
+
+            circuitQueryService.circuits(2023, 6)
+            circuitQueryService.circuits(2023, 6)
+
+            coVerify(exactly = 1) { jolpicaClient.getCircuits(2023, 6) }
         }
     }
 }

@@ -48,4 +48,22 @@ class DriverMappersTest {
 
         assertEquals(null, result.number)
     }
+
+    @Test
+    fun `toDriver should handle number which cannot be parsed to Int`() {
+        val jolpicaDriver = JolpicaDriver(
+            id = "alonso",
+            number = "abc",
+            code = "ALO",
+            url = "https://en.wikipedia.org/wiki/Fernando_Alonso",
+            givenName = "Fernando",
+            familyName = "Alonso",
+            dateOfBirth = "1981-07-29",
+            nationality = "Spanish"
+        )
+
+        val result = jolpicaDriver.toDriver()
+
+        assertEquals(null, result.number)
+    }
 }

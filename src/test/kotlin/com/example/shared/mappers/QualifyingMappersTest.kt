@@ -55,7 +55,7 @@ class QualifyingMappersTest {
 
     @Test
     fun `toQualifyings should group and map multiple JolpicaQualifying`() {
-        val q1 = JolpicaQualifying(
+        val q1Part1 = JolpicaQualifying(
             season = 2023,
             round = 1,
             url = "url1",
@@ -68,14 +68,58 @@ class QualifyingMappersTest {
                     position = 1,
                     driver = sampleJolpicaDriver,
                     constructor = sampleJolpicaConstructor,
-                    q1 = "time"
+                    q1 = "time1"
+                )
+            )
+        )
+        val q1Part2 = JolpicaQualifying(
+            season = 2023,
+            round = 1,
+            url = "url1",
+            name = "Race 1",
+            circuit = sampleJolpicaCircuit,
+            date = "date",
+            results = listOf(
+                JolpicaQualifyingResult(
+                    number = 2,
+                    position = 2,
+                    driver = sampleJolpicaDriver.copy(id = "perez", familyName = "Perez"),
+                    constructor = sampleJolpicaConstructor,
+                    q1 = "time2"
+                )
+            )
+        )
+        val q2 = JolpicaQualifying(
+            season = 2023,
+            round = 2,
+            url = "url2",
+            name = "Race 2",
+            circuit = sampleJolpicaCircuit,
+            date = "date2",
+            results = listOf(
+                JolpicaQualifyingResult(
+                    number = 1,
+                    position = 1,
+                    driver = sampleJolpicaDriver,
+                    constructor = sampleJolpicaConstructor,
+                    q1 = "time3"
                 )
             )
         )
 
-        val result = listOf(q1).toQualifyings()
+        val result = listOf(q1Part1, q1Part2, q2).toQualifyings()
 
-        assertEquals(1, result.size)
-        assertEquals(2023, result[0].season)
+        assertEquals(2, result.size)
+        val firstQualifying = result.find { it.round == 1 }!!
+        val secondQualifying = result.find { it.round == 2 }!!
+
+        assertEquals(2023, firstQualifying.season)
+        assertEquals(2, firstQualifying.results.size)
+        assertEquals("leclerc", firstQualifying.results[0].driver.id)
+        assertEquals("perez", firstQualifying.results[1].driver.id)
+
+        assertEquals(2023, secondQualifying.season)
+        assertEquals(1, secondQualifying.results.size)
+        assertEquals("leclerc", secondQualifying.results[0].driver.id)
     }
 }

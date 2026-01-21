@@ -45,7 +45,14 @@ class StandingsMappersTest {
         assertEquals(2023, result.season)
         assertEquals(22, result.round)
         assertEquals(1, result.standings.size)
-        assertEquals("max_verstappen", result.standings[0].driver.id)
+        val standing = result.standings[0]
+        assertEquals(1, standing.position)
+        assertEquals("1", standing.positionText)
+        assertEquals(575f, standing.points)
+        assertEquals(19, standing.wins)
+        assertEquals("max_verstappen", standing.driver.id)
+        assertEquals(1, standing.constructors.size)
+        assertEquals("red_bull", standing.constructors[0].id)
     }
 
     @Test
@@ -69,6 +76,11 @@ class StandingsMappersTest {
         assertEquals(2023, result.season)
         assertEquals(22, result.round)
         assertEquals(1, result.standings.size)
-        assertEquals("red_bull", result.standings[0].constructor.id)
+        val standing = result.standings[0]
+        assertEquals(1, standing.position)
+        assertEquals("1", standing.positionText)
+        assertEquals(860f, standing.points)
+        assertEquals(21, standing.wins)
+        assertEquals("red_bull", standing.constructor.id)
     }
 }
