@@ -1,6 +1,6 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.standings.ConstructorStandingList
 import com.example.server.schema.models.standings.DriverStandingList
 import com.example.shared.mappers.toConstructorStandingList
@@ -9,7 +9,7 @@ import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.plugins.*
 
 class StandingsQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val _driverCache = mutableMapOf<Pair<Int, Int?>, DriverStandingList>()
     private val _constructorCache = mutableMapOf<Pair<Int, Int?>, ConstructorStandingList>()

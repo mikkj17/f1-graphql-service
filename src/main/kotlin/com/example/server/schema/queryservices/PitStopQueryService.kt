@@ -1,13 +1,13 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.pitstop.RacePitStop
 import com.example.shared.mappers.toRacePitStop
 import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.plugins.*
 
 class PitStopQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val _cache = mutableMapOf<Triple<Int, Int, List<String>?>, RacePitStop>()
 

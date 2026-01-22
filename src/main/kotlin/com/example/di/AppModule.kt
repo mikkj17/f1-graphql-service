@@ -1,5 +1,6 @@
 package com.example.di
 
+import com.example.client.jolpica.IJolpicaClient
 import com.example.client.jolpica.JolpicaClient
 import com.example.client.openf1.OpenF1Client
 import io.ktor.client.*
@@ -43,6 +44,6 @@ val appModule = module {
     }
 
     // API Clients
-    single { JolpicaClient(get(qualifier = org.koin.core.qualifier.named("jolpica-client"))) }
+    single<IJolpicaClient> { JolpicaClient(get(qualifier = org.koin.core.qualifier.named("jolpica-client"))) }
     single { OpenF1Client(get(qualifier = org.koin.core.qualifier.named("openf1-client"))) }
 }

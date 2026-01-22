@@ -1,13 +1,13 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.driver.Driver
 import com.example.shared.mappers.toDriver
 import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.plugins.*
 
 class DriverQueryService(
-    private val jolpicaClient: JolpicaClient,
+    private val jolpicaClient: IJolpicaClient,
 ) : Query {
     private val driverCache = mutableMapOf<String, Driver>()
     private val driverListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Driver>>()

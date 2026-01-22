@@ -1,6 +1,6 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.result.Race
 import com.example.shared.mappers.toRace
 import com.example.shared.mappers.toRaces
@@ -8,7 +8,7 @@ import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.plugins.*
 
 class RaceQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private data class CacheKey(
         val year: Int?,

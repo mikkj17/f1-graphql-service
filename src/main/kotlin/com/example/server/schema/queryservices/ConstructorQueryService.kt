@@ -1,12 +1,12 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.constructor.Constructor
 import com.example.shared.mappers.toConstructor
 import com.expediagroup.graphql.server.operations.Query
 
 class ConstructorQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val constructorListCache = mutableMapOf<Triple<Int?, Int?, String?>, List<Constructor>>()
 

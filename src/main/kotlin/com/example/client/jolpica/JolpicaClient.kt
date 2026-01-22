@@ -1,7 +1,6 @@
 package com.example.client.jolpica
 
 import com.example.client.jolpica.schema.ApiResponse
-import com.example.client.jolpica.schema.MrData
 import com.example.client.jolpica.schema.models.JolpicaModel
 import com.example.client.jolpica.schema.models.circuit.Circuit
 import com.example.client.jolpica.schema.models.constructor.Constructor
@@ -22,11 +21,9 @@ import io.ktor.http.*
 import kotlinx.coroutines.delay
 import kotlin.math.pow
 
-typealias ModelsExtractor<T> = MrData<T>.() -> List<T>
-
 class JolpicaClient(
     private val client: HttpClient
-) {
+) : IJolpicaClient {
     private val host = "api.jolpi.ca"
     private val path = "/ergast/f1"
     private val limit = 100
@@ -103,162 +100,162 @@ class JolpicaClient(
         return firstChunk + remainingChunks
     }
 
-    suspend fun getDrivers(year: Int?, round: Int?) = fetchAll<Driver>(
+    override suspend fun getDrivers(year: Int?, round: Int?) = fetchAll<Driver>(
         "drivers",
         pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
     ) {
         driverTable!!.drivers!!
     }
 
-    suspend fun getDriversByConstructor(constructorId: String) = fetchAll<Driver>(
+    override suspend fun getDriversByConstructor(constructorId: String) = fetchAll<Driver>(
         "drivers",
         pathParameters = arrayOf("constructors", constructorId),
     ) {
         driverTable!!.drivers!!
     }
 
-    suspend fun getDriver(driverId: String) = fetch<Driver>("drivers", params = arrayOf(driverId)) {
+    override suspend fun getDriver(driverId: String) = fetch<Driver>("drivers", params = arrayOf(driverId)) {
         driverTable!!.drivers!!
     }
 
-    suspend fun getConstructors(year: Int?, round: Int?) = fetchAll<Constructor>(
+    override suspend fun getConstructors(year: Int?, round: Int?) = fetchAll<Constructor>(
         "constructors",
         pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
     ) {
         constructorTable!!.constructors!!
     }
 
-    suspend fun getConstructorsByDriver(driverId: String) = fetchAll<Constructor>(
+    override suspend fun getConstructorsByDriver(driverId: String) = fetchAll<Constructor>(
         "constructors",
         pathParameters = arrayOf("drivers", driverId),
     ) {
         constructorTable!!.constructors!!
     }
 
-    suspend fun getCircuits(year: Int?, round: Int?) = fetchAll<Circuit>(
+    override suspend fun getCircuits(year: Int?, round: Int?) = fetchAll<Circuit>(
         "circuits",
         pathParameters = listOfNotNull(year?.toString(), round?.toString()).toTypedArray(),
     ) {
         circuitTable!!.circuits!!
     }
 
-    suspend fun getSeasons() = fetchAll<Season>("seasons") {
+    override suspend fun getSeasons() = fetchAll<Season>("seasons") {
         seasonTable!!.seasons!!
     }
 
-    suspend fun getRaces(year: Int, round: Int?) = fetchAll<Race>(
+    override suspend fun getRaces(year: Int, round: Int?) = fetchAll<Race>(
         "results",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getRacesByDriver(driverId: String) = fetchAll<Race>(
+    override suspend fun getRacesByDriver(driverId: String) = fetchAll<Race>(
         "drivers",
         params = arrayOf(driverId, "results"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getRacesByConstructor(constructorId: String) = fetchAll<Race>(
+    override suspend fun getRacesByConstructor(constructorId: String) = fetchAll<Race>(
         "constructors",
         params = arrayOf(constructorId, "results"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getRacesByCircuit(circuitId: String) = fetchAll<Race>(
+    override suspend fun getRacesByCircuit(circuitId: String) = fetchAll<Race>(
         "circuits",
         params = arrayOf(circuitId, "results"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getMostRecentRace() = fetch<Race>(
+    override suspend fun getMostRecentRace() = fetch<Race>(
         "results",
         pathParameters = arrayOf("current", "last"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getSprints(year: Int, round: Int?) = fetchAll<Sprint>(
+    override suspend fun getSprints(year: Int, round: Int?) = fetchAll<Sprint>(
         "sprint",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getQualifyings(year: Int, round: Int?) = fetchAll<Qualifying>(
+    override suspend fun getQualifyings(year: Int, round: Int?) = fetchAll<Qualifying>(
         "qualifying",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getQualifyingsByDriver(driverId: String) = fetchAll<Qualifying>(
+    override suspend fun getQualifyingsByDriver(driverId: String) = fetchAll<Qualifying>(
         "drivers",
         params = arrayOf(driverId, "qualifying"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getQualifyingsByConstructor(constructorId: String) = fetchAll<Qualifying>(
+    override suspend fun getQualifyingsByConstructor(constructorId: String) = fetchAll<Qualifying>(
         "constructors",
         params = arrayOf(constructorId, "qualifying"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getQualifyingsByCircuit(circuitId: String) = fetchAll<Qualifying>(
+    override suspend fun getQualifyingsByCircuit(circuitId: String) = fetchAll<Qualifying>(
         "circuits",
         params = arrayOf(circuitId, "qualifying"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getSchedules(year: Int, round: Int?) = fetchAll<Schedule>(
+    override suspend fun getSchedules(year: Int, round: Int?) = fetchAll<Schedule>(
         "races",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getSchedulesByDriver(driverId: String) = fetchAll<Schedule>(
+    override suspend fun getSchedulesByDriver(driverId: String) = fetchAll<Schedule>(
         "drivers",
         params = arrayOf(driverId, "races"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getSchedulesByConstructor(constructorId: String) = fetchAll<Schedule>(
+    override suspend fun getSchedulesByConstructor(constructorId: String) = fetchAll<Schedule>(
         "constructors",
         params = arrayOf(constructorId, "races"),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getDriverStandings(year: Int, round: Int?) = fetch<DriverStandingList>(
+    override suspend fun getDriverStandings(year: Int, round: Int?) = fetch<DriverStandingList>(
         "driverStandings",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         standingsTable!!.standingsLists!!
     }
 
-    suspend fun getConstructorStandings(year: Int, round: Int?) = fetch<ConstructorStandingList>(
+    override suspend fun getConstructorStandings(year: Int, round: Int?) = fetch<ConstructorStandingList>(
         "constructorStandings",
         pathParameters = listOfNotNull(year.toString(), round?.toString()).toTypedArray(),
     ) {
         standingsTable!!.standingsLists!!
     }
 
-    suspend fun getLaps(year: Int, round: Int) = fetchAll<RaceLaps>(
+    override suspend fun getLaps(year: Int, round: Int) = fetchAll<RaceLaps>(
         "laps",
         pathParameters = arrayOf(year.toString(), round.toString()),
     ) {
         raceTable!!.races!!
     }
 
-    suspend fun getPitStops(year: Int, round: Int) = fetch<RacePitStop>(
+    override suspend fun getPitStops(year: Int, round: Int) = fetch<RacePitStop>(
         "pitstops",
         pathParameters = arrayOf(year.toString(), round.toString()),
     ) {

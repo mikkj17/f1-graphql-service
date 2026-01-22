@@ -1,13 +1,13 @@
 package com.example.server.schema.queryservices
 
-import com.example.client.jolpica.JolpicaClient
+import com.example.client.jolpica.IJolpicaClient
 import com.example.server.schema.models.schedule.Schedule
 import com.example.shared.mappers.toSchedule
 import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.plugins.*
 
 class ScheduleQueryService(
-    private val jolpicaClient: JolpicaClient
+    private val jolpicaClient: IJolpicaClient
 ) : Query {
     private val _scheduleCache = mutableMapOf<Pair<Int, Int>, Schedule>()
     private val _schedulesCache = mutableMapOf<Triple<Int?, String?, String?>, List<Schedule>>()
