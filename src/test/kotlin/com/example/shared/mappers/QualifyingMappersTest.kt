@@ -22,7 +22,7 @@ class QualifyingMappersTest {
     private val sampleJolpicaConstructor = JolpicaConstructor(id = "ferrari", name = "Ferrari", nationality = "Italian")
 
     @Test
-    fun `toQualifying should map JolpicaQualifying to server Qualifying`() {
+    fun `toQualifying should map JolpicaQualifying to internal Qualifying`() {
         val jolpicaQualifying = JolpicaQualifying(
             season = 2023,
             round = 6,

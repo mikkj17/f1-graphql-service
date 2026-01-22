@@ -7,7 +7,7 @@ import com.example.client.jolpica.schema.models.season.Season as JolpicaSeason
 class SeasonMappersTest {
 
     @Test
-    fun `toSeason should map JolpicaSeason to server Season`() {
+    fun `toSeason should map JolpicaSeason to internal Season`() {
         val jolpicaSeason = JolpicaSeason(
             year = 2024,
             url = "https://test.com/2024"

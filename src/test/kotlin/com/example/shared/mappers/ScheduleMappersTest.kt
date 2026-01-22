@@ -17,7 +17,7 @@ class ScheduleMappersTest {
     )
 
     @Test
-    fun `toSchedule should map JolpicaSchedule to server Schedule`() {
+    fun `toSchedule should map JolpicaSchedule to internal Schedule`() {
         val jolpicaSchedule = JolpicaSchedule(
             season = 2023,
             round = 10,

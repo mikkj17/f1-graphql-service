@@ -7,7 +7,7 @@ import com.example.client.jolpica.schema.models.constructor.Constructor as Jolpi
 class ConstructorMappersTest {
 
     @Test
-    fun `toConstructor should map JolpicaConstructor to server Constructor`() {
+    fun `toConstructor should map JolpicaConstructor to internal Constructor`() {
         val jolpicaConstructor = JolpicaConstructor(
             id = "red_bull",
             url = "https://test.com/redbull",

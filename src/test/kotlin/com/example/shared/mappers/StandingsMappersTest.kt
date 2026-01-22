@@ -24,7 +24,7 @@ class StandingsMappersTest {
     )
 
     @Test
-    fun `toDriverStandingList should map JolpicaDriverStandingList to server DriverStandingList`() {
+    fun `toDriverStandingList should map JolpicaDriverStandingList to internal DriverStandingList`() {
         val jolpicaStandings = JolpicaDriverStandingList(
             season = 2023,
             round = 22,
@@ -56,7 +56,7 @@ class StandingsMappersTest {
     }
 
     @Test
-    fun `toConstructorStandingList should map JolpicaConstructorStandingList to server ConstructorStandingList`() {
+    fun `toConstructorStandingList should map JolpicaConstructorStandingList to internal ConstructorStandingList`() {
         val jolpicaStandings = JolpicaConstructorStandingList(
             season = 2023,
             round = 22,

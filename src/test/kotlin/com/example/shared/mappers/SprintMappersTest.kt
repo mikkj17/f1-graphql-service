@@ -19,11 +19,14 @@ class SprintMappersTest {
     )
 
     private val sampleJolpicaDriver = JolpicaDriver(id = "verstappen", givenName = "Max", familyName = "Verstappen")
-    private val sampleJolpicaConstructor =
-        JolpicaConstructor(id = "red_bull", name = "Red Bull", nationality = "Austrian")
+    private val sampleJolpicaConstructor = JolpicaConstructor(
+        id = "red_bull",
+        name = "Red Bull",
+        nationality = "Austrian"
+    )
 
     @Test
-    fun `toSprint should map JolpicaSprint to server Sprint`() {
+    fun `toSprint should map JolpicaSprint to internal Sprint`() {
         val jolpicaSprint = JolpicaSprint(
             season = 2023,
             round = 21,
