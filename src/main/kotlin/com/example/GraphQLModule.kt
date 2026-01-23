@@ -38,6 +38,7 @@ fun Application.graphQLModule() {
                 inject<ScheduleQueryService>().value,
                 inject<SeasonQueryService>().value,
                 inject<StandingsQueryService>().value,
+                inject<NewsQueryService>().value,
             )
         }
     }

@@ -16,4 +16,5 @@ val queryServiceModule = module {
     single { ScheduleQueryService(get()) }
     single { SeasonQueryService(get()) }
     single { StandingsQueryService(get()) }
+    single { NewsQueryService(get()) }
 }
