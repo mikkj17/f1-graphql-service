@@ -14,17 +14,23 @@ fun EspnArticle.toNewsArticle() = NewsArticle(
     lastModified = lastModified,
     published = published,
     images = images.map { it.toNewsImage() },
-    links = links?.toNewsLinks()
+    links = links.toNewsLinks(),
+    byline = byline,
 )
 
 fun EspnImage.toNewsImage() = NewsImage(
     id = id,
-    url = url,
+    type = type,
+    name = name,
     caption = caption,
-    credit = credit
+    alt = alt,
+    credit = credit,
+    height = height,
+    width = width,
+    url = url,
 )
 
 fun EspnLinks.toNewsLinks() = NewsLinks(
     web = web?.href,
-    mobile = mobile?.href
+    mobile = mobile?.href,
 )
