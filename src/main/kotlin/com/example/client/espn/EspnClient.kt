@@ -6,10 +6,6 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 
-interface IEspnClient {
-    suspend fun getNews(): List<EspnArticle>
-}
-
 class EspnClient(private val client: HttpClient) : IEspnClient {
     private val baseUrl = "https://site.api.espn.com/apis/site/v2/sports/racing/f1/news"
 
