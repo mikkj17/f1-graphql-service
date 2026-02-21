@@ -4,7 +4,9 @@ import com.example.di.appModule
 import com.example.di.queryServiceModule
 import com.example.server.schema.queryservices.*
 import com.expediagroup.graphql.server.ktor.*
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
@@ -13,6 +15,15 @@ import org.koin.logger.slf4jLogger
 
 
 fun Application.graphQLModule() {
+    install(CORS) {
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
+        anyHost() // In production, you might want to restrict this
+    }
+
     // Initialize Koin
     install(Koin) {
         slf4jLogger()

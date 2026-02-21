@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.cors)
     implementation(libs.logback.classic)
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.ktor.server.test.host)
