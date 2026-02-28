@@ -11,4 +11,5 @@ data class Driver(
     val familyName: String,
     val dateOfBirth: String?,
     val nationality: String?,
+    val color: String?,
 ) : Model

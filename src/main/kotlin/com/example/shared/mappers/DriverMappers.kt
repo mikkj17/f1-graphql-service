@@ -1,6 +1,7 @@
 package com.example.shared.mappers
 
 import com.example.server.schema.models.driver.Driver
+import com.example.server.schema.utils.Providers
 import com.example.client.jolpica.schema.models.driver.Driver as JolpicaDriver
 
 fun JolpicaDriver.toDriver() = Driver(
@@ -12,4 +13,5 @@ fun JolpicaDriver.toDriver() = Driver(
     familyName = familyName,
     dateOfBirth = dateOfBirth,
     nationality = nationality,
+    color = Providers.currentConstructorFrom(id)?.let { Providers.colorFrom(it) }
 )
