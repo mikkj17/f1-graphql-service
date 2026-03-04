@@ -1,4 +1,4 @@
-package com.example.server.schema.utils
+package com.example.server.utils
 
 object Providers {
     private val driverConstructor = mapOf(
@@ -29,14 +29,14 @@ object Providers {
     private val constructorColors = mapOf(
         "alpine" to "#00A1E8",
         "aston_martin" to "#229971",
-        "audi" to "#4d4742",
-        "cadillac" to "#B2C2D2",
-        "ferrari" to "#ED1131",
-        "haas" to "#9C9FA2",
-        "mclaren" to "#F47600",
-        "mercedes" to "#00D7B6",
-        "rb" to "#6C98FF",
-        "red_bull" to "#4781D7",
+        "audi" to "#FF2D00",
+        "cadillac" to "#AAAAAD",
+        "ferrari" to "#E8002D",
+        "haas" to "#DEE1E2",
+        "mclaren" to "#FF8000",
+        "mercedes" to "#27F4D2",
+        "rb" to "#6692FF",
+        "red_bull" to "#3671C6",
         "williams" to "#1868DB",
     )
 

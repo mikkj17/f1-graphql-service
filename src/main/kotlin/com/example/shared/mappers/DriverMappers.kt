@@ -1,7 +1,7 @@
 package com.example.shared.mappers
 
 import com.example.server.schema.models.driver.Driver
-import com.example.server.schema.utils.Providers
+import com.example.server.utils.Providers
 import com.example.client.jolpica.schema.models.driver.Driver as JolpicaDriver
 
 fun JolpicaDriver.toDriver() = Driver(
